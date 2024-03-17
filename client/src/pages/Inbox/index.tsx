@@ -9,22 +9,24 @@ import Messages from "../../components/Messages";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useAppDispatch } from "../../redux/store";
 import { dialogsSelector, fetchDialogs } from "../../redux/slices/dialogs";
-import { userSelector } from "../../redux/slices/user";
+import { fetchUser, logout, userSelector } from "../../redux/slices/user";
+import axios from "axios";
 
 export default function Inbox(): ReactElement {
+
   const dispatch = useAppDispatch();
+
   const { items, currentDialogId } = useTypedSelector(dialogsSelector);
-  const user: any = useTypedSelector(userSelector)
+  const user: any = useTypedSelector(userSelector);
+
   console.log(user);
-  
 
   const messageRef = useRef<HTMLDivElement>(null);
 
-
-
   useEffect(() => {
+    axios.defaults.headers.common["token"] = window.localStorage.getItem('token');
     console.log("inbox has been rendered");
-
+    dispatch(fetchUser())
     dispatch(fetchDialogs());
   }, []);
 
@@ -41,8 +43,10 @@ export default function Inbox(): ReactElement {
           </div>
 
           <div className={styles.dialogsWrap}>
-            {items.length > 0 ? <Dialogs items={items} /> : <>Диалогов нет</>}
+            {items.length > 0 ? <Dialogs items={items} /> : <button onClick={() => dispatch(logout())}>выйти</button>}
           </div>
+
+          
 
           <div className={styles.profile}>
             <Avatar

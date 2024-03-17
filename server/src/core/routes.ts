@@ -27,6 +27,7 @@ export default (app: Express, io: Server) => {
   app.get("/users", User.getAll);
   app.post("/user/register", User.create);
   app.post("/user/login", User.login);
+  app.post("/user/verify", User.verify)
   app.delete("/user/:id", User.delete);
   app.put("/user/update/:id", User.update);
 

@@ -43,7 +43,7 @@ export default function Login() {
   };
 
   const authorize = (token: string) => {
-    axios.defaults.headers.common["token"] = token;
+    axios.defaults.headers.common['token'] = token
     dispatch(fetchUser());
     console.log("Вы успешно авторизованы!");
   };

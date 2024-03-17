@@ -6,13 +6,14 @@ import styles from "./index.module.scss";
 
 export default function AuthLayout({
   children,
+  needBanner = true
 }: IAuthLayoutProps): ReactElement {
   return (
     <main className={styles.auth}>
       <section className={styles.wrapper}>
         <div className={styles.inner}>
           {children}
-          <img className={styles.banner} src={banner} alt="Banner" />
+          {needBanner && <img className={styles.banner} src={banner} alt="Banner" />}
         </div>
       </section>
     </main>

@@ -6,8 +6,7 @@ export function createToken(userData: any): string {
   const data = {
     _id: userData._id,
     email: userData.email,
-    firstname: userData.firstname,
-    lastname: userData.lastname
+    login: userData.login
   }
 
   if (!secret) console.log("Секретный ключ не определён");

@@ -14,7 +14,7 @@ class UserController {
   io: Server;
 
   constructor(io: Server) {
-    this.io = io
+    this.io = io;
   }
 
   async getById(req: express.Request, res: express.Response) {
@@ -38,7 +38,6 @@ class UserController {
     try {
       const users = await UserModel.find();
       res.status(statusCodes.OK).json(users);
-      
     } catch (error) {
       sendResponse(res, statusCodes.InternalServerError, {
         message: statusCodesMessages[500],
@@ -64,12 +63,33 @@ class UserController {
     }
   }
 
+  async verify(req: express.Request, res: express.Response) {
+    const hash = req.query.hash;
+
+    if (!hash) {
+      sendResponse(res, 422, {
+        message: "Невалидный хэш",
+        statusCode: 422,
+      });
+    } else {
+      const userHash = await UserModel.findOne({ confirmed_hash: hash });
+
+      userHash
+        ? sendResponse(res, statusCodes.OK, {
+            message: "Аккаунт успешно подтверждён",
+            statusCode: statusCodes.OK,
+          })
+        : sendResponse(res, statusCodes.NotFound, {
+            message: "Хэш не найден",
+            statusCode: statusCodes.NotFound,
+          });
+    }
+  }
+
   async create(req: express.Request, res: express.Response) {
     const postData = {
       email: req.body.email,
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      avatar: req.body.avatar,
+      login: req.body.login,
       password: await hashPassword(req.body.password),
     };
 
@@ -152,10 +172,7 @@ class UserController {
     }
   }
 
-
-
   async login(req: express.Request, res: express.Response) {
-
     // res.header("Access-Control-Allow-Origin", "*");
 
     const postData: ILoginData = {
@@ -168,7 +185,7 @@ class UserController {
 
       if (!user) {
         sendResponse(res, statusCodes.NotFound, {
-          message: 'Пользователь не найден! Идите нахуй!',
+          message: "Пользователь не найден! Идите нахуй!",
           stautsCode: statusCodes.NotFound,
         });
       } else {

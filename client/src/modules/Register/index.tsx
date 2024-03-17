@@ -14,6 +14,8 @@ import loginIcon from "../../assets/svg/loginIcon";
 import eyeIcon from "../../assets/img/eye.svg";
 
 import styles from "./index.module.scss";
+import axios from "axios";
+import Notice from "../../components/Notice";
 
 export default function Register() {
   const {
@@ -24,6 +26,8 @@ export default function Register() {
 
   const [value, setValue] = useState("");
   const [formData, setFormData] = useState<any>({});
+  const [isNoticeVisible, setIsNoticeVisible] = useState(false)
+  const [error, setError] = useState<any>({})
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalExiting, setIsModalExiting] = useState(false);
@@ -48,14 +52,36 @@ export default function Register() {
     }, 100);
   };
 
-  const onSubmit = (data: any) => {
-    setFormData(data)
-    console.log(data)
-    
-  }
+  const registerUser = async (postData: any) => {
+    try {
+      const { data } = await axios.post<any>(
+        "http://localhost:3000/user/register",
+        postData
+      );
+
+      console.log(data);
+    } catch (error: any) {
+      error &&
+      (() => {
+        setIsNoticeVisible(true);
+        setError(error.response.data);
+      })();
+
+      setTimeout(() => {
+        setIsNoticeVisible(false);
+      }, 3000);
+    }
+  };
 
   return (
     <>
+      {isNoticeVisible && (
+        <Notice
+          title={error.statusCode}
+          text={error.message}
+          isVisible={isNoticeVisible}
+        />
+      )}
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
@@ -76,7 +102,7 @@ export default function Register() {
 
           <h1>Добро пожаловать!</h1>
           <p>Зарегистрируйтесь</p>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(registerUser)}>
             <Input
               style={errors.login ? styles.inputError : styles.registerInput}
               handleChange={handleChange}
@@ -170,6 +196,7 @@ export default function Register() {
               className={styles.registerBtn}
               type="submit"
               title="Зарегистрируйтесь"
+              disabled={isNoticeVisible}
             />
           </form>
         </div>

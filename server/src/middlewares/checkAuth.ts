@@ -18,7 +18,11 @@ export default async function checkAuth(
   next: express.NextFunction
 ) {
   // Если запрос к таким то путям, то скипает данный миддлвар и переходит к следующему
-  if (req.path === "/user/login" || req.path === "/user/register")
+  if (
+    req.path === "/user/login" ||
+    req.path === "/user/register" ||
+    req.path === "/user/verify"
+  )
     return next();
 
   try {
@@ -26,8 +30,8 @@ export default async function checkAuth(
     const verifiedToken = await verifyToken(token);
 
     if (verifiedToken) {
-      req.user = verifiedToken
-      
+      req.user = verifiedToken;
+
       next();
     } else {
       sendResponse(res, statusCodes.Forbidden, {

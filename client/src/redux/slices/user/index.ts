@@ -7,9 +7,16 @@ export const fetchUser = createAsyncThunk("user/get", async () => {
   return data;
 });
 
-const initialState = {
+interface IUserState {
+  data: {};
+  status: null | string;
+  token: null | string;
+  isAuth: boolean;
+}
+
+const initialState: IUserState = {
   data: {},
-  status: "",
+  status: null,
   token: window.localStorage.getItem('token'),
   isAuth: false,
 };
@@ -17,7 +24,13 @@ const initialState = {
 export const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logout(state) {
+      state.isAuth = false;
+      state.token = null
+      window.localStorage.removeItem('token')
+    },
+  },
 
   extraReducers(builder) {
     builder.addCase(fetchUser.pending, (state) => {
@@ -26,7 +39,7 @@ export const userSlice = createSlice({
       builder.addCase(fetchUser.fulfilled, (state, action) => {
         state.status = "success";
         state.data = action.payload;
-        state.token = window.localStorage.getItem('token')
+        state.token = window.localStorage.getItem("token");
         state.isAuth = true
       }),
       builder.addCase(fetchUser.rejected, (state) => {
@@ -38,6 +51,6 @@ export const userSlice = createSlice({
 
 export const userSelector = (state: RootState) => state.user.data;
 
-export const {} = userSlice.actions;
+export const {logout} = userSlice.actions;
 
 export default userSlice.reducer;
