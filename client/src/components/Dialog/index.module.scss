@@ -1,0 +1,73 @@
+@import "../../scss/vars.scss";
+
+.dialog {
+  display: flex;
+  padding: 16px 24px;
+  color: $text-black;
+  background-color: $layout-white;
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    --status-wrapper-color: #f5f5f5;
+    background-color: #f5f5f5;
+  }
+}
+
+.user {
+  max-width: 280px;
+  margin-left: 12px;
+
+  &Header {
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+
+    h3 {
+      color: $text-black;
+      font-size: $fz-standart;
+      max-width: 60%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    time {
+      font-size: 14px;
+      color: $text-grey;
+    }
+  }
+
+  &Content {
+    display: flex;
+    justify-content: space-between;
+
+    .messageRead {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .lastMessage {
+    max-width: 85%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: $text-grey;
+  }
+}
+
+.newMessage {
+  width: 20px;
+  height: 20px;
+  background-color: rgb(255, 76, 76);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+
+  span {
+    color: $text-white;
+    font-size: $fz-md;
+  }
+}

@@ -1,0 +1,45 @@
+@import "../../scss/vars.scss";
+
+.input {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-top: 16px;
+
+  input {
+    padding: 18px 48px;
+    font-size: $fz-standart;
+    font-family: "Montserrat", sans-serif;
+    border-radius: $radius-sm;
+
+    &::placeholder {
+      padding: 18px 0;
+      font-family: "Montserrat", sans-serif;
+      font-size: $fz-standart;
+    }
+  }
+
+  svg {
+    max-width: 24px;
+    max-height: 24px;
+    position: absolute;
+    bottom: 16px;
+
+    fill: rgba(0, 0, 0, 0.5);
+
+    left: 16px;
+  }
+
+  img {
+    position: absolute;
+    right: 16px;
+    max-width: 24px;
+    max-height: 24px;
+    cursor: pointer;
+    bottom: 16px;
+  }
+
+  .error {
+    color: red;
+  }
+}

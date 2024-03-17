@@ -1,0 +1,23 @@
+@import "../../scss/animations.scss";
+
+.notice {
+  position: absolute;
+  background-color: white;
+  color: black;
+  right: 16px;
+  top: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 16px 0px #00000042;
+  transition: animation 0.1s ease-in;
+
+  &Visible {
+    animation: fadeIn 0.1s;
+    opacity: 1;
+  }
+
+  &Hidden {
+    animation: fadeOut 0.1s;
+    opacity: 0;
+  }
+}

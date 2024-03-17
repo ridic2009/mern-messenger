@@ -1,0 +1,72 @@
+@import "../../scss/vars.scss";
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  a {
+    color: #0085d4;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.register {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &Input {
+    margin-top: 8px;
+    border: 1px solid #28a1af;
+    &::placeholder {
+      color: #000;
+    }
+  }
+
+  
+
+  h1 {
+    margin: 75px 0 8px 0;
+  }
+
+  &Btn {
+    width: 456px;
+    margin-top: 32px;
+  }
+
+  .constructPassword {
+    width: 456px;
+    margin-top: 32px;
+
+    button {
+      background-color: transparent;
+      border: none;
+      padding: 0;
+      color: red;
+      font-weight: 400;
+
+      &:hover {
+        background-color: transparent;
+        box-shadow: none;
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .inputError {
+    border: 1px solid red;
+    outline: none;
+  }
+
+  .errorMessage {
+    font-size: 14px;
+    color: red;
+    margin-top: 4px;
+    position: absolute;
+  }
+}

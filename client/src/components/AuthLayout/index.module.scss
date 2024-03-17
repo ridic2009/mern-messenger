@@ -1,0 +1,25 @@
+@import '../../scss/vars.scss';
+
+.auth {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    background: linear-gradient(90deg, #28A1AF 0%, #0085D4 51%, #0853DA 100%);
+}
+
+.wrapper {
+    background-color: #fff;
+    width: 1460px;
+    border-radius: $radius-lg;
+    padding: 64px;
+}
+
+.inner {
+    display: flex;
+    justify-content: space-between;
+}
+
+.banner {
+    padding-left: 64px;
+}

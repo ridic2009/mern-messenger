@@ -1,0 +1,49 @@
+@import "../../scss/vars.scss";
+
+.avatar {
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-white;
+  font-weight: 700;
+  border-radius: 50%;
+  min-width: 48px;
+  min-height: 48px;
+  width: 48px;
+  height: 48px;
+  position: relative;
+
+  img {
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    object-fit: cover;
+  }
+}
+
+.online {
+  &::before {
+    content: "";
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 16px;
+    height: 16px;
+    background-color: var(--status-wrapper-color);
+  }
+
+  &::after {
+    content: "";
+    background-color: rgb(37, 185, 37);
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    height: 8px;
+    width: 8px;
+  }
+}

@@ -1,0 +1,118 @@
+@import "../../scss/vars.scss";
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+header {
+  a {
+    color: #0085d4;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.login {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &Input {
+    margin-top: 8px;
+    border: 1px solid #28a1af;
+    &::placeholder {
+      color: #000;
+    }
+  }
+
+  h1 {
+    margin: 85px 0 8px 0;
+  }
+
+  .forgotPassword {
+    margin-top: 32px;
+    width: 456px;
+    a {
+      color: #0085d4;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .loginBtn {
+    width: 456px;
+    margin-top: 16px;
+  }
+
+  span {
+    margin: 32px 0;
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    font-size: 18px;
+    &::before,
+    &::after {
+      content: "";
+      flex-grow: 1;
+      border-bottom: 1px solid black;
+    }
+
+    &::before {
+      margin: 0 16px 0 0;
+    }
+
+    &::after {
+      margin: 0 0 0 16px;
+    }
+  }
+
+  .googleAuth {
+    width: 456px;
+    color: #222;
+    position: relative;
+    background-color: transparent;
+    border: 1px solid #222;
+    transition: 0.2s ease;
+
+    &:hover {
+      color: #fff;
+      background-color: #222;
+    }
+
+    &:active {
+      background-color: #444;
+    }
+
+    img {
+      position: absolute;
+      left: 20px;
+      bottom: 10px;
+    }
+  }
+
+  .showPassword {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+  }
+
+  .errorMessage {
+    font-size: 14px;
+    color: red;
+    margin-top: 4px;
+    position: absolute;
+  }
+
+  .inputError {
+    border: 1px solid red;
+    outline: none;
+  }
+}

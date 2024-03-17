@@ -1,0 +1,31 @@
+@import "../../scss/vars.scss";
+
+.chatInput {
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  margin-right: 8px;
+  font-family: inherit;
+  width: 100%;
+
+
+  &Wrap {
+    height: $inbox-input-height;
+    background-color: $layout-white;
+    color: $text-black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+  }
+
+  &Opt {
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+  }
+  &Opts {
+    display: flex;
+    gap: 8px;
+  }
+}
