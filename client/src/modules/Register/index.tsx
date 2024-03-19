@@ -25,7 +25,6 @@ export default function Register() {
   } = useForm();
 
   const [value, setValue] = useState("");
-  const [formData, setFormData] = useState<any>({});
   const [isNoticeVisible, setIsNoticeVisible] = useState(false)
   const [error, setError] = useState<any>({})
   const [showPassword, setShowPassword] = useState(false);

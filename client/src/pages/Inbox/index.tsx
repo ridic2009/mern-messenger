@@ -11,22 +11,21 @@ import { useAppDispatch } from "../../redux/store";
 import { dialogsSelector, fetchDialogs } from "../../redux/slices/dialogs";
 import { fetchUser, logout, userSelector } from "../../redux/slices/user";
 import axios from "axios";
+import { IUser } from "../../types/user";
 
 export default function Inbox(): ReactElement {
-
   const dispatch = useAppDispatch();
 
   const { items, currentDialogId } = useTypedSelector(dialogsSelector);
-  const user: any = useTypedSelector(userSelector);
-
-  console.log(user);
+  const user: IUser | null = useTypedSelector(userSelector);
 
   const messageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    axios.defaults.headers.common["token"] = window.localStorage.getItem('token');
     console.log("inbox has been rendered");
-    dispatch(fetchUser())
+    axios.defaults.headers.common["token"] =
+      window.localStorage.getItem("token");
+    dispatch(fetchUser());
     dispatch(fetchDialogs());
   }, []);
 
@@ -43,22 +42,17 @@ export default function Inbox(): ReactElement {
           </div>
 
           <div className={styles.dialogsWrap}>
-            {items.length > 0 ? <Dialogs items={items} /> : <button onClick={() => dispatch(logout())}>выйти</button>}
+            {items.length > 0 ? (
+              <Dialogs items={items} />
+            ) : (
+              <button onClick={() => dispatch(logout())}>выйти</button>
+            )}
           </div>
 
-          
-
           <div className={styles.profile}>
-            <Avatar
-              isOnline={true}
-              avatar=""
-              user={{
-                _id: "65d6066c9d60e661ac29b515",
-                fullname: "Snoop Dogg",
-              }}
-            />
+            <Avatar isOnline={true} avatar="" user={user!} />
             <div className={styles.profileBadge}>
-              <h2>{user.firstname}</h2>
+              <h2>{user?.login}</h2>
               <span>В сети</span>
             </div>
 

@@ -17,11 +17,10 @@ const UserSchema = new Schema<IUser>(
       required: [true, "Почта обязательна для заполнения"],
       unique: true,
     },
-    firstname: {
+    login: {
       type: String,
-      required: [true, "Имя обязательно для заполнения"],
+      required: [true, "Логин обязателен для заполнения"],
     },
-    lastname: String,
     password: {
       type: String,
       required: [true, "Пароль обязателен для заполнения"],

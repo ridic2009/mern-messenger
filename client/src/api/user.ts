@@ -1,5 +1,6 @@
 import axios from "axios";
+import { IUser } from "../types/user";
 
 export default {
-    getMe: () => axios.get<any>('http://localhost:3000/user/profile'),
+    getMe: () => axios.get<IUser>('http://localhost:3000/user/profile'),
 }

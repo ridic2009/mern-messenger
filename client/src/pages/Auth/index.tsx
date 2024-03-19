@@ -5,6 +5,7 @@ import Register from "../../modules/Register";
 import Inbox from "../Inbox";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import AuthLayout from "../../components/AuthLayout";
+import VerifyAccount from "../../modules/VerifyAccount";
 
 export default function Auth() {
   const { token } = useTypedSelector((state) => state.user);
@@ -24,11 +25,7 @@ export default function Auth() {
           <Route path={"/register"} element={<Register />}></Route>
           <Route
             path={"/register/verify"}
-            element={
-              <AuthLayout needBanner={false}>
-                <div>Регистрация прошла успешно, перейдите по ссылке которую я отправил вам на почту для подтверждения аккаунта</div>
-              </AuthLayout>
-            }
+            element={<VerifyAccount />}
           ></Route>
           <Route
             path={"/*"}

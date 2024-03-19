@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 import user from "../../../api/user";
+import { IUser } from "../../../types/user";
 
 export const fetchUser = createAsyncThunk("user/get", async () => {
   const { data } = await user.getMe();
@@ -8,16 +9,16 @@ export const fetchUser = createAsyncThunk("user/get", async () => {
 });
 
 interface IUserState {
-  data: {};
-  status: null | string;
-  token: null | string;
+  data: IUser | null;
+  status: string | null;
+  token: string | null;
   isAuth: boolean;
 }
 
 const initialState: IUserState = {
-  data: {},
+  data: null,
   status: null,
-  token: window.localStorage.getItem('token'),
+  token: window.localStorage.getItem("token"),
   isAuth: false,
 };
 
@@ -27,8 +28,8 @@ export const userSlice = createSlice({
   reducers: {
     logout(state) {
       state.isAuth = false;
-      state.token = null
-      window.localStorage.removeItem('token')
+      state.token = null;
+      window.localStorage.removeItem("token");
     },
   },
 
@@ -40,17 +41,24 @@ export const userSlice = createSlice({
         state.status = "success";
         state.data = action.payload;
         state.token = window.localStorage.getItem("token");
-        state.isAuth = true
+        state.isAuth = true;
       }),
       builder.addCase(fetchUser.rejected, (state) => {
         state.status = "rejected";
-        state.data = {};
+        state.data = {
+          _id: "",
+          email: "",
+          login: "",
+          password: "",
+          confirmed: false,
+          confirmed_hash: "",
+        };
       });
   },
 });
 
 export const userSelector = (state: RootState) => state.user.data;
 
-export const {logout} = userSlice.actions;
+export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;
