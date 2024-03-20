@@ -1,7 +1,7 @@
 import express from "express";
 
-import DialogModel from "../schemas/DialogModel";
-import MessageModel from "../schemas/MessageModel";
+import DialogModel from "../models/DialogModel";
+import MessageModel from "../models/MessageModel";
 
 import sendResponse from "../helpers/sendResponse";
 import statusCodes from "../configs/statusCodes.json";
@@ -12,7 +12,7 @@ class DialogController {
   io: Server;
 
   constructor(io: Server) {
-    this.io = io
+    this.io = io;
   }
 
   async getById(req: express.Request, res: express.Response) {

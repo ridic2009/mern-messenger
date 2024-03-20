@@ -1,12 +1,12 @@
 import express from "express";
 
-import UserModel from "../schemas/UserModel";
+import UserModel from "../models/UserModel";
 import sendResponse from "../helpers/sendResponse";
 import statusCodes from "../configs/statusCodes.json";
 import statusCodesMessages from "../configs/statusCodesMessages.json";
 import { ILoginData } from "../types/Login";
 import { createToken } from "../helpers/createToken";
-import hashPassword from "../helpers/hashPassword";
+import toHash from "../helpers/toHash";
 import bcrypt from "bcrypt";
 import { Server } from "socket.io";
 
@@ -72,7 +72,7 @@ class UserController {
         statusCode: 422,
       });
     } else {
-      const userHash = await UserModel.findOne({ confirmed_hash: hash });
+      const userHash = await UserModel.findOne({ confirm_hash: hash });
 
       userHash
         ? sendResponse(res, statusCodes.OK, {
@@ -90,7 +90,7 @@ class UserController {
     const postData = {
       email: req.body.email,
       login: req.body.login,
-      password: await hashPassword(req.body.password),
+      password: req.body.password,
     };
 
     const user = new UserModel(postData);

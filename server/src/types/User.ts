@@ -5,7 +5,7 @@ export default interface IUser extends Document {
   avatar?: string;
   login: string;
   password: string;
-  confirmed_hash: string;
+  confirm_hash: string;
   confirmed: boolean;
   last_seen: Date;
   created_at: Date;

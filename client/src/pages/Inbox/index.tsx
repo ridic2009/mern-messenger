@@ -17,7 +17,7 @@ export default function Inbox(): ReactElement {
   const dispatch = useAppDispatch();
 
   const { items, currentDialogId } = useTypedSelector(dialogsSelector);
-  const user: IUser | null = useTypedSelector(userSelector);
+  const user: IUser = useTypedSelector(userSelector);
 
   const messageRef = useRef<HTMLDivElement>(null);
 

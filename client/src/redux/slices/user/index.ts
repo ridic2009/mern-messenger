@@ -9,14 +9,21 @@ export const fetchUser = createAsyncThunk("user/get", async () => {
 });
 
 interface IUserState {
-  data: IUser | null;
+  data: IUser;
   status: string | null;
   token: string | null;
   isAuth: boolean;
 }
 
 const initialState: IUserState = {
-  data: null,
+  data: {
+    _id: '',
+    email: '',
+    login: '',
+    password: '',
+    confirmed: false,
+    confirmed_hash: ''
+  },
   status: null,
   token: window.localStorage.getItem("token"),
   isAuth: false,
@@ -46,12 +53,12 @@ export const userSlice = createSlice({
       builder.addCase(fetchUser.rejected, (state) => {
         state.status = "rejected";
         state.data = {
-          _id: "",
-          email: "",
-          login: "",
-          password: "",
+          _id: '',
+          email: '',
+          login: '',
+          password: '',
           confirmed: false,
-          confirmed_hash: "",
+          confirmed_hash: ''
         };
       });
   },

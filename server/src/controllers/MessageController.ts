@@ -1,6 +1,6 @@
 import express from "express";
 
-import MessageModel from "../schemas/MessageModel";
+import MessageModel from "../models/MessageModel";
 import sendResponse from "../helpers/sendResponse";
 import statusCodes from "../configs/statusCodes.json";
 import statusCodesMessages from "../configs/statusCodesMessages.json";
@@ -10,7 +10,7 @@ class MessageController {
   io: Server;
 
   constructor(io: Server) {
-    this.io = io
+    this.io = io;
   }
 
   async getById(req: express.Request, res: express.Response) {
@@ -40,13 +40,11 @@ class MessageController {
       const messages = await MessageModel.find();
       res.status(statusCodes.OK).json(messages);
     } catch (error) {
-
       console.log(error);
       sendResponse(res, statusCodes.InternalServerError, {
         message: statusCodesMessages[500],
         statusCode: statusCodes.InternalServerError,
       });
-      
     }
   }
 
@@ -61,12 +59,12 @@ class MessageController {
 
     try {
       let newMessage = await message.save();
-      newMessage = await newMessage.populate('dialog')
+      newMessage = await newMessage.populate("dialog");
       console.log(
         `Отправлено сообщение: ${message.text}. Диалог: ${message.dialog}`
       );
 
-      this.io.emit('NEW:MESSAGE', newMessage)
+      this.io.emit("NEW:MESSAGE", newMessage);
       res.status(statusCodes.OK).json(newMessage);
     } catch (error) {
       console.log(error);
@@ -75,7 +73,7 @@ class MessageController {
         statusCode: statusCodes.InternalServerError,
       });
     }
-  }
+  };
 
   async delete(req: express.Request, res: express.Response) {
     try {

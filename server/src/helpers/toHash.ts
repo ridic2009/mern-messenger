@@ -1,11 +1,17 @@
 import bcrypt from 'bcrypt'
 
-export default async function hashPassword(password: string, saltRounds = 6) {
+export default async function toHash(value: any, saltRounds = 6) {
     try {
+
       const salt = await bcrypt.genSalt(saltRounds);
-      return await bcrypt.hash(password, salt);
+      const hashedValue = await bcrypt.hash(value, salt);
+
+      return hashedValue
+
     } catch (error) {
+
       console.log(error);
       return null;
+
     }
   }

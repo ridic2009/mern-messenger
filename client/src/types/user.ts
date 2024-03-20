@@ -1,12 +1,12 @@
 export interface IUser {
-    _id: string | null,
-    email: string | null;
-    avatar?: string | null;
-    login: string | null;
-    password: string | null;
-    confirmed_hash: string | null;
-    confirmed: boolean | null;
-    last_seen?: Date | null;
-    created_at?: Date | null;
-    updated_at?: Date | null;
+    _id: string,
+    email: string;
+    avatar?: string;
+    login: string;
+    password: string;
+    confirmed_hash: string;
+    confirmed: boolean;
+    last_seen?: Date;
+    created_at?: Date;
+    updated_at?: Date;
 }
