@@ -4,7 +4,6 @@ import Login from "../../modules/Login";
 import Register from "../../modules/Register";
 import Inbox from "../Inbox";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import AuthLayout from "../../components/AuthLayout";
 import VerifyAccount from "../../modules/VerifyAccount";
 
 export default function Auth() {
@@ -23,10 +22,7 @@ export default function Auth() {
         <>
           <Route path={"/login"} element={<Login />}></Route>
           <Route path={"/register"} element={<Register />}></Route>
-          <Route
-            path={"/register/verify"}
-            element={<VerifyAccount />}
-          ></Route>
+          <Route path={"/register/verify"} element={<VerifyAccount />}></Route>
           <Route
             path={"/*"}
             element={<Navigate to={"/login"} replace />}

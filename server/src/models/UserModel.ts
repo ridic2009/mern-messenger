@@ -32,13 +32,11 @@ UserSchema.pre<IUser>("save", async function (next) {
 
   try {
     const hashedPassword = await toHash(user.password);
-    const confirmHash = await toHash(+new Date() + "");
 
-    if (!hashedPassword || !confirmHash) {
+    if (!hashedPassword) {
       throw new Error("Не удалось сохранить нового пользователя в базу данных");
     }
     user.password = hashedPassword;
-    user.confirm_hash = confirmHash;
     next();
   } catch (error) {
     next(error as CallbackError);

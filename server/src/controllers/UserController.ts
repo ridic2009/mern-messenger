@@ -9,6 +9,7 @@ import { createToken } from "../helpers/createToken";
 import toHash from "../helpers/toHash";
 import bcrypt from "bcrypt";
 import { Server } from "socket.io";
+import { log } from "console";
 
 class UserController {
   io: Server;
@@ -68,21 +69,34 @@ class UserController {
 
     if (!hash) {
       sendResponse(res, 422, {
-        message: "Невалидный хэш",
+        message: "Неверный хэш",
         statusCode: 422,
       });
     } else {
-      const userHash = await UserModel.findOne({ confirm_hash: hash });
+      const user = await UserModel.findOne({ confirm_hash: hash });
 
-      userHash
-        ? sendResponse(res, statusCodes.OK, {
+      if (user) {
+        if (user.confirmed) {
+          sendResponse(res, statusCodes.OK, {
+            message: "Данный аккаунт уже был подтверждён ранее",
+            statusCode: statusCodes.OK,
+          });
+        } else {
+
+          user.confirmed = true;
+          await user.save();
+
+          sendResponse(res, statusCodes.OK, {
             message: "Аккаунт успешно подтверждён",
             statusCode: statusCodes.OK,
-          })
-        : sendResponse(res, statusCodes.NotFound, {
-            message: "Хэш не найден",
-            statusCode: statusCodes.NotFound,
           });
+        }
+      } else {
+        sendResponse(res, statusCodes.NotFound, {
+          message: "Хэш не найден",
+          statusCode: statusCodes.NotFound,
+        });
+      }
     }
   }
 
@@ -91,6 +105,7 @@ class UserController {
       email: req.body.email,
       login: req.body.login,
       password: req.body.password,
+      confirm_hash: await toHash(+new Date() + "")
     };
 
     const user = new UserModel(postData);
