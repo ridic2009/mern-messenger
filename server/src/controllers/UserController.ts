@@ -1,4 +1,5 @@
 import express from "express";
+import nodemailer from "nodemailer";
 
 import UserModel from "../models/UserModel";
 import sendResponse from "../helpers/sendResponse";
@@ -9,7 +10,6 @@ import { createToken } from "../helpers/createToken";
 import toHash from "../helpers/toHash";
 import bcrypt from "bcrypt";
 import { Server } from "socket.io";
-import { log } from "console";
 
 class UserController {
   io: Server;
@@ -82,7 +82,6 @@ class UserController {
             statusCode: statusCodes.OK,
           });
         } else {
-
           user.confirmed = true;
           await user.save();
 
@@ -104,8 +103,8 @@ class UserController {
     const postData = {
       email: req.body.email,
       login: req.body.login,
-      password: req.body.password,
-      confirm_hash: await toHash(+new Date() + "")
+      password: await toHash(req.body.password),
+      confirm_hash: await toHash(+new Date() + ""),
     };
 
     const user = new UserModel(postData);
@@ -119,6 +118,30 @@ class UserController {
           statusCode: statusCodes.BadRequest,
         });
       } else {
+        let transporter = nodemailer.createTransport({
+          host: "smtp.yandex.ru",
+          port: 465,
+          secure: true,
+          auth: {
+            user: "w1ld-rabbit@ya.ru",
+            pass: "tbhhlcwmmrfkcdst",
+          },
+        });
+
+        transporter.sendMail(
+          {
+            from: "w1ld-rabbit@ya.ru",
+            to: postData.email,
+            subject: "Подтверждение аккаунта",
+            html: `<b>Доброго времени суток, для подтверждения вашего аккаунта перейдите по <a href="http://localhost:5173/register/verify?hash=${postData.confirm_hash}">ссылке</a></b>`,
+          },
+          (error, info) => {
+            error
+              ? console.log(error)
+              : console.log(info.messageId, info.response);
+          }
+        );
+
         const newUser = await user.save();
         res.status(statusCodes.OK).json(newUser);
       }
@@ -211,9 +234,10 @@ class UserController {
 
         if (isPasswordCorrect) {
           const token = createToken(user);
-          res
-            .status(statusCodes.OK)
-            .json({ status: statusCodesMessages[200], token });
+          sendResponse(res, statusCodes.OK, {
+            statusCode: statusCodes.OK,
+            token: token,
+          });
         } else {
           sendResponse(res, statusCodes.Unauthorized, {
             message: "Неверные данные от аккаунта",

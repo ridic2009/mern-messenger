@@ -23,12 +23,14 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.3",
+    "nodemailer": "^6.9.13",
     "socket.io": "^4.7.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "validator": "^13.11.0"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.14",
     "nodemon": "^3.0.2"
   }
 }

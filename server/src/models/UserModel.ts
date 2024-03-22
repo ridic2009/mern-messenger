@@ -1,7 +1,6 @@
-import { CallbackError, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import isEmail from "validator/lib/isEmail";
 import IUser from "../types/User";
-import toHash from "../helpers/toHash";
 
 const UserSchema = new Schema(
   {
@@ -26,21 +25,5 @@ const UserSchema = new Schema(
   },
   { timestamps: true }
 );
-
-UserSchema.pre<IUser>("save", async function (next) {
-  const user = this;
-
-  try {
-    const hashedPassword = await toHash(user.password);
-
-    if (!hashedPassword) {
-      throw new Error("Не удалось сохранить нового пользователя в базу данных");
-    }
-    user.password = hashedPassword;
-    next();
-  } catch (error) {
-    next(error as CallbackError);
-  }
-});
 
 export default model<IUser>("User", UserSchema);
