@@ -1,12 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import axios from "axios";
 
 import AuthLayout from "../../components/AuthLayout";
 import Logo from "../../components/Logo";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
+import Notice from "../../components/Notice";
 
 import emailIcon from "../../assets/svg/emailIcon";
 import passwordIcon from "../../assets/svg/passwordIcon";
@@ -14,10 +16,10 @@ import loginIcon from "../../assets/svg/loginIcon";
 import eyeIcon from "../../assets/img/eye.svg";
 
 import styles from "./index.module.scss";
-import axios from "axios";
-import Notice from "../../components/Notice";
 
 export default function Register() {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -25,8 +27,8 @@ export default function Register() {
   } = useForm();
 
   const [value, setValue] = useState("");
-  const [isNoticeVisible, setIsNoticeVisible] = useState(false)
-  const [error, setError] = useState<any>({})
+  const [isNoticeVisible, setIsNoticeVisible] = useState(false);
+  const [error, setError] = useState<any>({});
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalExiting, setIsModalExiting] = useState(false);
@@ -58,13 +60,16 @@ export default function Register() {
         postData
       );
 
-      console.log(data);
+      if (data) {
+        console.log(data, "Регистрация прошла успешно");
+        navigate("/register/verify");
+      }
     } catch (error: any) {
       error &&
-      (() => {
-        setIsNoticeVisible(true);
-        setError(error.response.data);
-      })();
+        (() => {
+          setIsNoticeVisible(true);
+          setError(error.response.data);
+        })();
 
       setTimeout(() => {
         setIsNoticeVisible(false);
@@ -87,7 +92,13 @@ export default function Register() {
           isExiting={isModalExiting}
           onClose={closeModal}
         >
-          123
+          <p className={styles.strongPassword}>Сложный пароль должен включать в себя:</p>
+          <ul className={styles.rules}>
+            <li>Не менее 4 символов</li>
+            <li>Одна прописная и заглавная буква</li>
+            <li>Один спецсимвол (#$%^@!&*)</li>
+            <li>Одна цифра</li>
+          </ul>
         </Modal>
       )}
       <AuthLayout>

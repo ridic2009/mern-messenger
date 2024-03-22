@@ -1,6 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
-import user from "../../api/user";
 import { useEffect, useState } from "react";
+
+import user from "../../api/user";
+
+import AuthLayout from "../../components/AuthLayout";
+
+import checkMail from "../../assets/img/checkmail.svg";
+import verified from "../../assets/img/verified.svg";
+
+import styles from "./index.module.scss";
 
 export default function VerifyAccount() {
   const location = useLocation();
@@ -42,21 +50,33 @@ export default function VerifyAccount() {
   }, []);
 
   return isAlreadyVerified ? (
-    <div>
-      <h1>Аккаунт уже подтверждён</h1>
-      <p>{info}</p>
-      <Link to={"/login"}>Войти</Link>
-    </div>
+    <AuthLayout needBanner={false}>
+      <div className={styles.verifyWrap}>
+        <img src={verified} alt="подтверждение аккаунта" />
+        <h1>Аккаунт уже подтверждён</h1>
+        <p>{info}</p>
+        <Link className={styles.redirect} to={"/login"}>
+          Войти
+        </Link>
+      </div>
+    </AuthLayout>
   ) : isVerified ? (
-    <div>
-      <h1>Успех</h1>
-      <p>{info}</p>
-      <Link to={"/login"}>Войти</Link>
-    </div>
+    <AuthLayout needBanner={false}>
+      <div className={styles.verifyWrap}>
+        <h1>Успех</h1>
+        <p>{info}</p>
+        <Link className={styles.redirect} to={"/login"}>
+          Войти
+        </Link>
+      </div>
+    </AuthLayout>
   ) : (
-    <div>
-      <h1>Подтверждение аккаунта</h1>
-      <p>{info}</p>
-    </div>
+    <AuthLayout needBanner={false}>
+      <div className={styles.verifyWrap}>
+        <img src={checkMail} alt="подтверждение аккаунта" />
+        <h1>Подтверждение аккаунта</h1>
+        <p>{info}</p>
+      </div>
+    </AuthLayout>
   );
 }
