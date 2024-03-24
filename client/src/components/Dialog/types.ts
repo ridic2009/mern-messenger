@@ -1,16 +1,15 @@
-export interface IDialog {
-    _id: string,
-    user: {
-      _id: string | number;
-      fullname?: string;
-      avatar?: string;
-      isOnline: boolean;
-    };
-    lastMessage: {
-      text: string;
-      created_at: string;
-      updated_at: string;
-      isRead: boolean;
-    };
-    unread: number;
-  }
+import { IUser } from "../../types/user";
+
+export interface IDialogProps {
+  currentUser: IUser;
+  lastMessage: {
+    _id: string;
+    text: string;
+    sender: IUser;
+    createdAt: string;
+  };
+  initiator: IUser;
+  partner: IUser;
+  unread: number;
+  onSelect: () => void;
+}

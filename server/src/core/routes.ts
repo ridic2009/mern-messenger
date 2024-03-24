@@ -14,8 +14,9 @@ import { Server } from "socket.io";
 export default (app: Express, io: Server) => {
   app.use(bodyParser.json());
   app.use(cors())
-  app.use(updateLastSeen);
   app.use(checkAuth);
+  app.use(updateLastSeen);
+
 
   const User = new UserController(io);
   const Dialog = new DialogController(io);

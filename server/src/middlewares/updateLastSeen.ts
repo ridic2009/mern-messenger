@@ -2,14 +2,16 @@ import express from "express";
 import UserModel from "../models/UserModel";
 
 export default async function updateLastSeen(
-  _: express.Request,
+  req: express.Request,
   __: express.Response,
   next: express.NextFunction
 ) {
   try {
+    console.log(req.user);
+
     await UserModel.updateOne(
       {
-        _id: "6589a892913e169c98bb10b2",
+        _id: req.user._id,
       },
       { last_seen: new Date() }
     );

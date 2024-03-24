@@ -5,6 +5,7 @@ import sendResponse from "../helpers/sendResponse";
 import statusCodes from "../configs/statusCodes.json";
 import statusCodesMessages from "../configs/statusCodesMessages.json";
 import { Server } from "socket.io";
+import DialogModel from "../models/DialogModel";
 
 class MessageController {
   io: Server;
@@ -60,12 +61,17 @@ class MessageController {
     try {
       let newMessage = await message.save();
       newMessage = await newMessage.populate("dialog");
+
       console.log(
         `Отправлено сообщение: ${message.text}. Диалог: ${message.dialog}`
       );
 
+
+      await DialogModel.findOneAndUpdate({_id: postData.dialog}, {lastMessage: message._id}, {upsert: true})
       this.io.emit("NEW:MESSAGE", newMessage);
+
       res.status(statusCodes.OK).json(newMessage);
+
     } catch (error) {
       console.log(error);
       sendResponse(res, statusCodes.InternalServerError, {

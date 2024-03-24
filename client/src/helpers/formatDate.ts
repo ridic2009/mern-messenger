@@ -8,7 +8,13 @@ export default function formatDate(dateString: string): string {
     now.getDate() - 1
   );
 
-  const date = new Date(dateString) 
+  const date = new Date(dateString);
+
+
+
+  // if (isNaN(date.getTime())) {
+  //   return "Неверный формат даты";
+  // }
 
   const messageDate = new Date(
     date.getFullYear(),
@@ -16,8 +22,8 @@ export default function formatDate(dateString: string): string {
     date.getDate()
   );
 
-  const isToday = Number(messageDate) === Number(today);
-  const isYesterday = Number(messageDate) === Number(yesterday);
+  const isToday = +messageDate === +today;
+  const isYesterday = +messageDate === +yesterday;
 
   const formattedTodayDate = new Intl.DateTimeFormat("ru", {
     hour: "2-digit",
@@ -31,6 +37,8 @@ export default function formatDate(dateString: string): string {
     year: "2-digit",
   }).format(date);
 
+  
+
   if (isToday) {
     return formattedTodayDate;
   } else if (isYesterday) {
@@ -39,3 +47,4 @@ export default function formatDate(dateString: string): string {
     return formattedDate;
   }
 }
+

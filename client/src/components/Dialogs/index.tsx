@@ -6,23 +6,25 @@ import Dialog from "../Dialog";
 import styles from "./index.module.scss";
 import { setCurrentDialogId } from "../../redux/slices/dialogs";
 import { useAppDispatch } from "../../redux/store";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { userSelector } from "../../redux/slices/user";
 
 export default function Dialogs({ items }: IDialogsProps): ReactElement {
   const dispatch = useAppDispatch();
+  const user = useTypedSelector(userSelector)
 
   const sortedItems = [...items].sort(
     (a, b) =>
-      new Date(b.lastMessage.created_at).getTime() -
-      new Date(a.lastMessage.created_at).getTime()
+      new Date(b.lastMessage.createdAt).getTime() -
+      new Date(a.lastMessage.createdAt).getTime()
   );
-
-  // const onSelectDialog = (id: string) => console.log("DIALOG ID: " + id);
 
   return (
     <ul className={styles.dialogs}>
       {sortedItems.map((item) => (
         <Dialog
-          key={item.user._id}
+          currentUser={user}
+          key={item._id}
           onSelect={() => dispatch(setCurrentDialogId(item._id))}
           {...item}
         />

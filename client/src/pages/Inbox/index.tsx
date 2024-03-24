@@ -1,17 +1,20 @@
 import { ReactElement, useEffect, useRef } from "react";
+import axios from "axios";
+
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import Dialogs from "../../components/Dialogs";
-
-import styles from "./index.module.scss";
+import Messages from "../../components/Messages";
 import Avatar from "../../components/Avatar";
 import ChatInput from "../../components/ChatInput";
-import Messages from "../../components/Messages";
-import { useTypedSelector } from "../../hooks/useTypedSelector";
+
 import { useAppDispatch } from "../../redux/store";
 import { dialogsSelector, fetchDialogs } from "../../redux/slices/dialogs";
 import { fetchUser, logout, userSelector } from "../../redux/slices/user";
-import axios from "axios";
+
 import { IUser } from "../../types/user";
+
+import styles from "./index.module.scss";
 
 export default function Inbox(): ReactElement {
   const dispatch = useAppDispatch();

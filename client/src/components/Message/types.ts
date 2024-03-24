@@ -1,3 +1,5 @@
+import { IUser } from "../../types/user";
+
 export interface IMessageProps {
   author?: string | number;
   time: string;
@@ -5,27 +7,10 @@ export interface IMessageProps {
   audio?: string;
   avatar: string;
   isMe?: boolean;
-  user: {
-    _id: string;
-    fullname: string;
-    avatar: string;
-    isOnline: boolean;
-  };
+  user: IUser;
   isRead?: boolean;
   isTyping: boolean;
   isUnlistened?: boolean;
 }
 
-export interface IMessage {
-  _id: string;
-  user: {
-    _id: string;
-    fullname: string;
-    avatar?: string;
-    isOnline: boolean;
-  };
-  text: string;
-  created_at: string;
-  dialog_id: string;
-  unread: number;
-}
+

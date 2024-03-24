@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
+
 import isEmail from "validator/lib/isEmail";
+
 import IUser from "../types/User";
 
 const UserSchema = new Schema(
@@ -25,5 +27,6 @@ const UserSchema = new Schema(
   },
   { timestamps: true }
 );
+
 
 export default model<IUser>("User", UserSchema);

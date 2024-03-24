@@ -1,4 +1,4 @@
-import { IDialog } from "../Dialog/types";
+import { IDialog } from "../../types/dialog";
 
 export interface IDialogsProps {
     items: IDialog[]
