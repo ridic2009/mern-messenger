@@ -12,6 +12,7 @@ class MessageController {
 
   constructor(io: Server) {
     this.io = io;
+    this.create = this.create.bind(this)
   }
 
   async getById(req: express.Request, res: express.Response) {
@@ -74,7 +75,7 @@ class MessageController {
 
     try {
       let newMessage = await message.save()
-      newMessage = await newMessage.populate("dialog");
+      newMessage = await newMessage.populate(['dialog', 'sender']);
 
       console.log(
         `Отправлено сообщение: ${message.text}. Диалог: ${message.dialog}`
@@ -87,7 +88,7 @@ class MessageController {
       );
 
 
-      // this.io.emit("NEW:MESSAGE", newMessage);
+      this.io.emit("server:message_create", newMessage);
 
       res.status(statusCodes.OK).json(newMessage);
     } catch (error) {

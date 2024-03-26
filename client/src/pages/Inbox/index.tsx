@@ -23,7 +23,6 @@ export default function Inbox(): ReactElement {
   const messageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-
     dispatch(fetchUser());
   }, []);
 
@@ -44,10 +43,10 @@ export default function Inbox(): ReactElement {
           </div>
 
           <div className={styles.profile}>
-            <Avatar isOnline={true} avatar="" user={user} />
+            <Avatar isOnline={false} avatar="" user={user} />
             <div className={styles.profileBadge}>
-              <h2>{user?.login}</h2>
-              <span>В сети</span>
+              <h2>{user.login}</h2>
+              <span>{user.isOnline ? "В сети" : "Не в сети"}</span>
             </div>
 
             <svg

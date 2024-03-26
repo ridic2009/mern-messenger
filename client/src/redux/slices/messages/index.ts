@@ -8,8 +8,7 @@ export const fetchMessages = createAsyncThunk(
   "messages/get",
   async (dialogId: string) => {
     const { data } = await messages.getAllMessagesByDialogId(dialogId);
-
-    return { items: data };
+    return data;
   }
 );
 
@@ -21,14 +20,18 @@ const initialState: IMessagesState = {
 export const messagesSlice = createSlice({
   name: "messages",
   initialState,
-  reducers: {},
+  reducers: {
+    addMessage(state, action) {
+      state.items.push(action.payload)
+    }
+  },
   extraReducers(builder) {
     builder.addCase(fetchMessages.pending, (state) => {
       state.status = "pending";
     });
 
     builder.addCase(fetchMessages.fulfilled, (state, action) => {
-      state.items = action.payload.items;
+      state.items = action.payload;
       state.status = "fullfiled";
     });
 
@@ -41,6 +44,6 @@ export const messagesSlice = createSlice({
 
 export const messagesSelector = (state: RootState) => state.messages;
 
-export const {} = messagesSlice.actions;
+export const {addMessage} = messagesSlice.actions;
 
 export default messagesSlice.reducer;
