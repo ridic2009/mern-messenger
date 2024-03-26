@@ -1,6 +1,4 @@
 import { ReactElement, useEffect, useRef } from "react";
-import axios from "axios";
-
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
 import Dialogs from "../../components/Dialogs";
@@ -9,8 +7,8 @@ import Avatar from "../../components/Avatar";
 import ChatInput from "../../components/ChatInput";
 
 import { useAppDispatch } from "../../redux/store";
-import { dialogsSelector, fetchDialogs } from "../../redux/slices/dialogs";
-import { fetchUser, logout, userSelector } from "../../redux/slices/user";
+import { dialogsSelector } from "../../redux/slices/dialogs";
+import { fetchUser, userSelector } from "../../redux/slices/user";
 
 import { IUser } from "../../types/user";
 
@@ -19,17 +17,14 @@ import styles from "./index.module.scss";
 export default function Inbox(): ReactElement {
   const dispatch = useAppDispatch();
 
-  const { items, currentDialogId } = useTypedSelector(dialogsSelector);
+  const { currentDialogId } = useTypedSelector(dialogsSelector);
   const user: IUser = useTypedSelector(userSelector);
 
   const messageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log("inbox has been rendered");
-    axios.defaults.headers.common["token"] =
-      window.localStorage.getItem("token");
+
     dispatch(fetchUser());
-    dispatch(fetchDialogs());
   }, []);
 
   return (
@@ -45,7 +40,7 @@ export default function Inbox(): ReactElement {
           </div>
 
           <div className={styles.dialogsWrap}>
-            {items.length > 0 ? <Dialogs items={items} /> : <>Нет диалогов</>}
+            <Dialogs />
           </div>
 
           <div className={styles.profile}>

@@ -14,7 +14,6 @@ export default function Messages({ dialogId, blockRef }: any) {
 
   useEffect(() => {
     dialogId === null ? void 0 : dispatch(fetchMessages(dialogId));
-    console.log(blockRef);
   }, [dialogId]);
 
   useEffect(() => {

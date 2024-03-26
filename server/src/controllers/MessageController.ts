@@ -73,7 +73,7 @@ class MessageController {
     const message = new MessageModel(postData);
 
     try {
-      let newMessage = await message.save();
+      let newMessage = await message.save()
       newMessage = await newMessage.populate("dialog");
 
       console.log(

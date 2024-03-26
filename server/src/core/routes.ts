@@ -10,18 +10,18 @@ import DialogController from "../controllers/DialogController";
 import MessageController from "../controllers/MessageController";
 
 import cors from 'cors'
-import { Server } from "socket.io";
+import socket from "socket.io";
 
-export default (app: Express, io: Server) => {
-  app.use(bodyParser.json());
-  app.use(cors())
-  app.use(checkAuth);
-  app.use(updateLastSeen);
-
+export default (app: Express, io: socket.Server) => {
 
   const User = new UserController(io);
   const Dialog = new DialogController(io);
   const Messages = new MessageController(io);
+
+  app.use(bodyParser.json());
+  app.use(cors())
+  app.use(checkAuth);
+  app.use(updateLastSeen);
 
   // Пользователь
   app.get("/user/profile", User.getMe);

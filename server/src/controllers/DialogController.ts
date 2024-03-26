@@ -1,4 +1,5 @@
 import express from "express";
+import socket from "socket.io";
 
 import DialogModel from "../models/DialogModel";
 import MessageModel from "../models/MessageModel";
@@ -6,22 +7,24 @@ import MessageModel from "../models/MessageModel";
 import sendResponse from "../helpers/sendResponse";
 import statusCodes from "../configs/statusCodes.json";
 import statusCodesMessages from "../configs/statusCodesMessages.json";
-import { Server } from "socket.io";
 
 class DialogController {
-  io: Server;
-
-  constructor(io: Server) {
+  io: socket.Server;
+  constructor(io: socket.Server) {
     this.io = io;
+    this.create = this.create.bind(this);
   }
 
   async getById(req: express.Request, res: express.Response) {
     try {
       const foundDialog = await DialogModel.findById(req.params.id)
         .populate(["initiator", "partner", "lastMessage"])
-        .populate({ path: "lastMessage", populate: {
-          path: 'sender'
-        } })
+        .populate({
+          path: "lastMessage",
+          populate: {
+            path: "sender",
+          },
+        })
         .exec();
 
       if (!foundDialog)
@@ -45,9 +48,12 @@ class DialogController {
       const dialogs = await DialogModel.find()
         .or([{ initiator: req.user._id }, { partner: req.user._id }])
         .populate(["initiator", "partner", "lastMessage"])
-        .populate({ path: "lastMessage", populate: {
-          path: 'sender'
-        } })
+        .populate({
+          path: "lastMessage",
+          populate: {
+            path: "sender",
+          },
+        })
         .exec();
 
       if (dialogs) {
@@ -70,9 +76,8 @@ class DialogController {
     const postData = {
       initiator: req.body.initiator,
       partner: req.body.partner,
+      firstMessage: req.body.text,
     };
-
-    const dialog = new DialogModel(postData);
 
     try {
       const foundDialog = await DialogModel.findOne({
@@ -80,25 +85,37 @@ class DialogController {
         partner: postData.partner,
       });
 
-      console.log(foundDialog);
-
       if (foundDialog) {
         sendResponse(res, statusCodes.BadRequest, {
           message: "Такой диалог уже существует",
           statusCode: statusCodes.BadRequest,
         });
       } else {
+        const dialog = new DialogModel({
+          initiator: postData.initiator,
+          partner: postData.partner,
+        });
         const newDialog = await dialog.save();
 
+        console.log("Новый диалог ёпты" + " " + newDialog);
+
         const message = new MessageModel({
-          text: req.body.text,
-          sender: req.body.initiator,
+          text: postData.firstMessage,
+          sender: postData.initiator,
           dialog: newDialog._id,
         });
 
-        await message.save();
+        const newMessage = await message.save();
 
-        console.log(`Был создан такой вот диалог: ${dialog}`);
+        await DialogModel.findOneAndUpdate(
+          { _id: newDialog._id },
+          { lastMessage: newMessage._id },
+          { new: true }
+        );
+
+        this.io.emit("server:dialog_create", (data: any) => {
+          console.log(data);
+        });
         res.status(statusCodes.OK).json(newDialog);
       }
     } catch (error) {

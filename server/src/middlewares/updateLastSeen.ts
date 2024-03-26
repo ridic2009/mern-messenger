@@ -7,7 +7,6 @@ export default async function updateLastSeen(
   next: express.NextFunction
 ) {
   try {
-    console.log(req.user);
 
     await UserModel.updateOne(
       {

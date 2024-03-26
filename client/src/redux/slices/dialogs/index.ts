@@ -7,7 +7,7 @@ import dialogs from "../../../api/dialogs";
 
 export const fetchDialogs = createAsyncThunk("dialogs/get", async () => {
   const { data } = await dialogs.getAll();
-  return { items: data };
+  return data;
 });
 
 const initialState: IDialogsState = {
@@ -31,7 +31,7 @@ export const dialogsSlice = createSlice({
     }),
       builder.addCase(fetchDialogs.fulfilled, (state, action) => {
         state.status = "success";
-        state.items = action.payload.items;
+        state.items = action.payload;
       }),
       builder.addCase(fetchDialogs.rejected, (state) => {
         state.status = "rejected";

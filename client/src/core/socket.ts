@@ -1,5 +1,5 @@
 import io from "socket.io-client";
 
-const socket = io(window.location.origin.replace('3000', '3004'))
+const socket = io("localhost:3000")
 
 export default socket

@@ -7,7 +7,7 @@ const options = {
 
 const MessageSchema = new Schema<IMessage>(
   {
-    text: { type: String, require: Boolean },
+    text: { type: String, required: true },
     sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
     dialog: { type: Schema.Types.ObjectId, ref: "Dialog", required: true },
     unread: { type: Boolean, default: true },

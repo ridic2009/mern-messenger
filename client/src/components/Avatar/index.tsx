@@ -5,7 +5,7 @@ import styles from "./index.module.scss";
 import { IAvatarProps } from "./types";
 
 export default function Avatar({ isOnline, avatar, user}: IAvatarProps) {
-  const [color, setColor] = useState({r: 0, g: 0, b: 0})
+  const [_, setColor] = useState({r: 0, g: 0, b: 0})
   const initials = user.login.split(' ').map((char: string) => char[0]).join('').toUpperCase()
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function Avatar({ isOnline, avatar, user}: IAvatarProps) {
     <div
       className={isOnline ? `${styles.avatar} ${styles.online}` : styles.avatar}
       style={
-        {backgroundColor: `rgb(${color.r} ${color.g} ${color.b})`}
+        {backgroundColor: `black`}
       }
     >
       {initials}
