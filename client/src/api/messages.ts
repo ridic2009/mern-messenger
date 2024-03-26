@@ -1,6 +1,6 @@
 import axios from "axios";
-import { IMessage } from "../components/Message/types";
+import { IMessage } from "../types/message";
 
 export default {
-    getAllMessagesByDialogId: (dialogId: string) => axios.get<IMessage[]>('http://localhost:3004/messages?dialog_id=' + dialogId)
+    getAllMessagesByDialogId: (dialogId: string) => axios.get<IMessage[]>('http://localhost:3000/messages?dialog_id=' + dialogId)
 }

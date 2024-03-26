@@ -6,10 +6,10 @@ import { IAvatarProps } from "./types";
 
 export default function Avatar({ isOnline, avatar, user}: IAvatarProps) {
   const [color, setColor] = useState({r: 0, g: 0, b: 0})
-  const initials = user.login?.split(' ').map((char: string) => char[0]).join('').toUpperCase()
+  const initials = user.login.split(' ').map((char: string) => char[0]).join('').toUpperCase()
 
   useEffect(() => {
-    setColor(generateAvatarColors(user._id!))
+    setColor(generateAvatarColors(user._id))
   }, [user._id])
 
   return avatar ? (

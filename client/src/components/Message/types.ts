@@ -1,15 +1,14 @@
 import { IUser } from "../../types/user";
 
 export interface IMessageProps {
-  author?: string | number;
+  sender: IUser;
   time: string;
   text?: string;
   audio?: string;
-  avatar: string;
+  avatar?: string;
   isMe?: boolean;
-  user: IUser;
   isRead?: boolean;
-  isTyping: boolean;
+  isTyping?: boolean;
   isUnlistened?: boolean;
 }
 

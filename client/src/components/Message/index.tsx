@@ -15,7 +15,7 @@ let currentAudio: HTMLAudioElement | null | undefined = null;
 export default function Message({
   time,
   text,
-  user,
+  sender,
   avatar,
   isMe,
   isRead,
@@ -72,7 +72,7 @@ export default function Message({
 
   return (
     <div className={isTyping ? styles.messageIsTyping : styles.message}>
-      <Avatar avatar={avatar} user={user} />
+      <Avatar avatar={avatar} user={sender} />
 
       <div className={styles.messageWrapper}>
         {isTyping ? (

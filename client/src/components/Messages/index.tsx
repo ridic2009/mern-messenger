@@ -5,6 +5,8 @@ import { useAppDispatch } from "../../redux/store";
 import Message from "../Message";
 
 import styles from "./index.module.scss";
+import { IMessage } from "../../types/message";
+import formatDate from "../../helpers/formatDate";
 
 export default function Messages({ dialogId, blockRef }: any) {
   const dispatch = useAppDispatch();
@@ -20,7 +22,7 @@ export default function Messages({ dialogId, blockRef }: any) {
   }, [items]);
 
   return items.length > 0 ? (
-    items.map((item: any) => <Message {...item} />)
+    items.map((item: IMessage) => <Message time={formatDate(item.createdAt)} {...item} />)
   ) : (
     <div className={styles.emptyMessages}>
       <span>╮( ˘ ､ ˘ )╭</span>

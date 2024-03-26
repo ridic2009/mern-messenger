@@ -16,8 +16,22 @@ class MessageController {
 
   async getById(req: express.Request, res: express.Response) {
     try {
-      const foundMessage = await MessageModel.find({ dialog: req.query.dialog })
-        .populate(["dialog"])
+      const foundMessage = await MessageModel.find({
+        dialog: req.query.dialog_id,
+      })
+        .populate(["dialog", "sender"])
+        .populate({
+          path: "dialog",
+          populate: {
+            path: "initiator",
+          },
+        })
+        .populate({
+          path: "dialog",
+          populate: {
+            path: "partner",
+          },
+        })
         .exec();
 
       if (!foundMessage)
@@ -49,7 +63,7 @@ class MessageController {
     }
   }
 
-  create = async (req: express.Request, res: express.Response) => {
+  async create(req: express.Request, res: express.Response) {
     const postData = {
       text: req.body.text,
       sender: req.user._id,
@@ -66,12 +80,16 @@ class MessageController {
         `Отправлено сообщение: ${message.text}. Диалог: ${message.dialog}`
       );
 
+      await DialogModel.findOneAndUpdate(
+        { _id: postData.dialog },
+        { lastMessage: message._id },
+        { upsert: true }
+      );
 
-      await DialogModel.findOneAndUpdate({_id: postData.dialog}, {lastMessage: message._id}, {upsert: true})
-      this.io.emit("NEW:MESSAGE", newMessage);
+
+      // this.io.emit("NEW:MESSAGE", newMessage);
 
       res.status(statusCodes.OK).json(newMessage);
-
     } catch (error) {
       console.log(error);
       sendResponse(res, statusCodes.InternalServerError, {
@@ -79,7 +97,7 @@ class MessageController {
         statusCode: statusCodes.InternalServerError,
       });
     }
-  };
+  }
 
   async delete(req: express.Request, res: express.Response) {
     try {

@@ -45,15 +45,11 @@ export default function Inbox(): ReactElement {
           </div>
 
           <div className={styles.dialogsWrap}>
-            {items.length > 0 ? (
-              <Dialogs items={items} />
-            ) : (
-              <button onClick={() => dispatch(logout())}>выйти</button>
-            )}
+            {items.length > 0 ? <Dialogs items={items} /> : <>Нет диалогов</>}
           </div>
 
           <div className={styles.profile}>
-            <Avatar isOnline={true} avatar="" user={user!} />
+            <Avatar isOnline={true} avatar="" user={user} />
             <div className={styles.profileBadge}>
               <h2>{user?.login}</h2>
               <span>В сети</span>

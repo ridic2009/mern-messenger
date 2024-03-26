@@ -8,6 +8,7 @@ import checkAuth from "../middlewares/checkAuth";
 import UserController from "../controllers/UserController";
 import DialogController from "../controllers/DialogController";
 import MessageController from "../controllers/MessageController";
+
 import cors from 'cors'
 import { Server } from "socket.io";
 

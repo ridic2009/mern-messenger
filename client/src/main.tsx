@@ -1,7 +1,9 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.scss";
+
+// Socket
+import './core/socket.ts'
 
 // Redux Toolkit
 import { store } from "./redux/store";
