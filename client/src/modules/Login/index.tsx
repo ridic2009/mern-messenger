@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 
 import AuthLayout from "../../components/AuthLayout";
 import Logo from "../../components/Logo";
@@ -14,10 +13,9 @@ import passwordIcon from "../../assets/svg/passwordIcon";
 import googleIcon from "../../assets/img/google.svg";
 import eyeIcon from "../../assets/img/eye.svg";
 
-import { useAppDispatch } from "../../redux/store";
-import { fetchUser } from "../../redux/slices/user";
 
 import styles from "./index.module.scss";
+import user from "../../api/user";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,8 +23,6 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>({});
   const [_, setValue] = useState("");
-
-  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -42,35 +38,19 @@ export default function Login() {
     setValue(e.target.value);
   };
 
-  const authorize = (token: string) => {
-    axios.defaults.headers.common['token'] = token
-    dispatch(fetchUser());
-    console.log("Вы успешно авторизованы!");
-  };
-
   const login = async (postData: any) => {
     try {
-      setIsLoading(true);
-      const { data } = await axios.post(
-        "http://localhost:3000/user/login",
-        postData
-      );
+      const { data } = await user.login(postData);
 
-      const { token } = data;
-      token && authorize(token);
-      window.localStorage.setItem('token', token)
+      if (data.token) {
+        window.localStorage.setItem("token", data.token);
+        window.location.href = "/inbox";
+      }
+
+      return data;
     } catch (error: any) {
-      error &&
-        (() => {
-          setIsNoticeVisible(true);
-          setError(error.response.data);
-        })();
-
-      setTimeout(() => {
-        setIsNoticeVisible(false);
-      }, 3000);
-    } finally {
-      setIsLoading(false);
+      alert(error.response.data.message);
+      console.log(error);
     }
   };
 

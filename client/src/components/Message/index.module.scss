@@ -8,7 +8,7 @@
 
   display: flex;
   align-items: end;
-  max-width: 50%;
+  width: 100%;
 
   &Avatar {
     width: 48px;
@@ -54,6 +54,7 @@
   }
 
   &Wrapper {
+    max-width: 90%;
     position: relative;
     margin-left: 16px;
   }
@@ -74,6 +75,9 @@
   }
 
   &Content {
+    display: block;
+    word-wrap: break-word;
+    overflow: hidden;
     position: relative;
     padding: 16px 192px 16px 16px;
     background: rgb(56, 56, 56);

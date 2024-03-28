@@ -1,8 +1,8 @@
 import { ReactElement, useEffect, useRef } from "react";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 
-import Dialogs from "../../components/Dialogs";
 import Messages from "../../components/Messages";
+import Sidebar from "../../components/Sidebar";
 import ChatInput from "../../components/ChatInput";
 
 import { useAppDispatch } from "../../redux/store";
@@ -12,7 +12,7 @@ import { fetchUser, userSelector } from "../../redux/slices/user";
 import { IUser } from "../../types/user";
 
 import styles from "./index.module.scss";
-import UserProfile from "../../components/UserProfile";
+
 
 export default function Inbox(): ReactElement {
   const dispatch = useAppDispatch();
@@ -27,6 +27,7 @@ export default function Inbox(): ReactElement {
       : currentDialog?.initiator.login;
 
   const partnerStatus = null;
+
   useEffect(() => {
     dispatch(fetchUser());
   }, []);
@@ -34,21 +35,7 @@ export default function Inbox(): ReactElement {
   return (
     <div className={styles.page}>
       <main className={styles.inbox}>
-        <aside className={styles.sidebar}>
-          <div className={styles.sidebarHeader}>
-            <input
-              className={styles.search}
-              type="text"
-              placeholder="Поиск собеседника"
-            />
-          </div>
-
-          <div className={styles.dialogsWrap}>
-            <Dialogs user={user} />
-          </div>
-
-          <UserProfile user={user} />
-        </aside>
+        <Sidebar user={user} />
 
         <section className={styles.chat}>
           {currentDialog && (

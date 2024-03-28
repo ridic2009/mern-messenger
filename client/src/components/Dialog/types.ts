@@ -1,6 +1,7 @@
 import { IUser } from "../../types/user";
 
 export interface IDialogProps {
+  dialogId: string;
   currentUser: IUser;
   lastMessage: {
     _id: string;

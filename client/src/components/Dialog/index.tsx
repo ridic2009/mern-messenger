@@ -1,12 +1,20 @@
-import styles from "./index.module.scss";
+import { ReactElement} from "react";
+
 import doubleTickIcon from "../../assets/img/doubletickblue.svg";
 import singleTickIcon from "../../assets/img/tick.svg";
+
 import formatDate from "../../helpers/formatDate";
-import { ReactElement } from "react";
-import Avatar from "../Avatar";
 import { IDialogProps } from "./types";
 
+import Avatar from "../Avatar";
+
+import styles from "./index.module.scss";
+
+
+
+
 export default function Dialog({
+
   currentUser,
   lastMessage,
   unread,
@@ -15,7 +23,7 @@ export default function Dialog({
   partner,
   onSelect,
 }: IDialogProps): ReactElement {
-  
+
   const user = currentUser._id === initiator._id ? partner : initiator;
 
   return (

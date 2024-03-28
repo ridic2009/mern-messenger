@@ -1,28 +1,27 @@
 import { Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
 
-import Auth from "./pages/Auth";
-import { useTypedSelector } from "./hooks/useTypedSelector";
+import Register from "./modules/Register";
+import Login from "./modules/Login";
 
-import "./scss/app.scss";
+import Inbox from "./pages/Inbox";
+import VerifyAccount from "./modules/VerifyAccount";
 
-axios.interceptors.request.use((config) => {
-  config.headers["token"] = window.localStorage.getItem("token");
-  return config;
-});
-
+axios.defaults.headers.common["token"] = window.localStorage.getItem("token");
 
 export default function App() {
-  const { isAuth } = useTypedSelector((state) => state.user);
+
 
   return (
-    <Routes>
-      <Route path="/*" element={<Auth />}></Route>
-      {isAuth ? (
-        <Route path="/" element={<Navigate to={"/inbox"} />}></Route>
-      ) : (
-        <Route path="/" element={<Navigate to={"/login"} />}></Route>
-      )}
-    </Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/inbox" element={<Inbox />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/register/verify" element={<VerifyAccount />} />
+        <Route path="/*" element={<Navigate to={"/login"} />} />
+      </Routes>
+    </BrowserRouter>
   );
 }

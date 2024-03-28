@@ -1,7 +1,6 @@
 import { ReactElement, useEffect } from "react";
 import socket from "../../core/socket";
 
-
 import {
   dialogsSelector,
   fetchDialogs,
@@ -16,9 +15,7 @@ import { IDialogsProps } from "./types";
 
 import styles from "./index.module.scss";
 
-
-
-export default function Dialogs({user}: IDialogsProps): ReactElement {
+export default function Dialogs({ user }: IDialogsProps): ReactElement {
   const dispatch = useAppDispatch();
   const { items } = useTypedSelector(dialogsSelector);
 
@@ -34,6 +31,10 @@ export default function Dialogs({user}: IDialogsProps): ReactElement {
     socket.on("server:dialog_create", () => {
       dispatch(fetchDialogs());
     });
+
+    socket.on("server:message_create", () => {
+      dispatch(fetchDialogs());
+    });
   }, []);
 
   return (
@@ -41,6 +42,7 @@ export default function Dialogs({user}: IDialogsProps): ReactElement {
       {items.length > 0 ? (
         sortedItems.map((item) => (
           <Dialog
+            dialogId={item._id}
             isUnread={true}
             currentUser={user}
             key={item._id}

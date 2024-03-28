@@ -1,7 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import axios from "axios";
 
 import AuthLayout from "../../components/AuthLayout";
 import Logo from "../../components/Logo";
@@ -16,9 +15,9 @@ import loginIcon from "../../assets/svg/loginIcon";
 import eyeIcon from "../../assets/img/eye.svg";
 
 import styles from "./index.module.scss";
+import user from "../../api/user";
 
 export default function Register() {
-  const navigate = useNavigate();
 
   const {
     register,
@@ -53,27 +52,13 @@ export default function Register() {
     }, 100);
   };
 
-  const registerUser = async (postData: any) => {
+  const registration = async (postData: any) => {
     try {
-      const { data } = await axios.post<any>(
-        "http://localhost:3000/user/register",
-        postData
-      );
-
-      if (data) {
-        console.log(data, "Регистрация прошла успешно");
-        navigate("/register/verify");
-      }
+      const { data } = await user.register(postData);
+      return data;
     } catch (error: any) {
-      error &&
-        (() => {
-          setIsNoticeVisible(true);
-          setError(error.response.data);
-        })();
-
-      setTimeout(() => {
-        setIsNoticeVisible(false);
-      }, 3000);
+      setError(error.response.data.message)
+      alert(error.response.data.message)
     }
   };
 
@@ -92,7 +77,9 @@ export default function Register() {
           isExiting={isModalExiting}
           onClose={closeModal}
         >
-          <p className={styles.strongPassword}>Сложный пароль должен включать в себя:</p>
+          <p className={styles.strongPassword}>
+            Сложный пароль должен включать в себя:
+          </p>
           <ul className={styles.rules}>
             <li>Не менее 4 символов</li>
             <li>Одна прописная и заглавная буква</li>
@@ -112,7 +99,7 @@ export default function Register() {
 
           <h1>Добро пожаловать!</h1>
           <p>Зарегистрируйтесь</p>
-          <form onSubmit={handleSubmit(registerUser)}>
+          <form onSubmit={handleSubmit((data) => registration(data))}>
             <Input
               style={errors.login ? styles.inputError : styles.registerInput}
               handleChange={handleChange}
