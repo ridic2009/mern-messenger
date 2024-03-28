@@ -1,7 +1,5 @@
 import { IUser } from "../../types/user";
 
-export interface IDialogsProps {
+export interface IUserProfileProps {
     user: IUser
 }
-
-

@@ -1,12 +1,39 @@
+import { useState } from "react";
+
+import messages from "../../api/messages";
+
 import styles from "./index.module.scss";
 
-export default function ChatInput() {
+import { IChatInputProps } from "./types";
+
+export default function ChatInput({ userId, dialogId }: IChatInputProps) {
+  const [value, setValue] = useState("");
+  const sendMessage = async (
+    text: string,
+    userId: string,
+    dialogId: string | undefined,
+    event?: React.KeyboardEvent
+  ) => {
+
+    if (dialogId === null) {
+      return
+    }
+
+    if (event?.key === "Enter" && text.trim() !== "") {
+      await messages.send(text, userId, dialogId);
+      setValue("");
+    }
+  };
+
   return (
     <div className={styles.chatInputWrap}>
       <input
+        onChange={(e) => setValue(e.target.value)}
+        onKeyUp={(e) => sendMessage(value, userId, dialogId, e)}
         className={styles.chatInput}
         type="text"
         placeholder="Напишите сообщение"
+        value={value}
       />
 
       <div className={styles.chatInputOpts}>
@@ -31,7 +58,9 @@ export default function ChatInput() {
           />
         </svg>
         <svg
+        id="send"
           className={styles.chatInputOpt}
+          onClick={() => sendMessage(value, userId, dialogId)}
           width="800px"
           height="800px"
           viewBox="0 -0.5 25 25"

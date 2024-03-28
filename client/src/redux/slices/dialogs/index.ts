@@ -4,6 +4,7 @@ import { RootState } from "../../store";
 import { IDialogsState } from "./types";
 
 import dialogs from "../../../api/dialogs";
+import { IDialog } from "../../../types/dialog";
 
 export const fetchDialogs = createAsyncThunk("dialogs/get", async () => {
   const { data } = await dialogs.getAll();
@@ -12,7 +13,7 @@ export const fetchDialogs = createAsyncThunk("dialogs/get", async () => {
 
 const initialState: IDialogsState = {
   items: [],
-  currentDialogId: null,
+  currentDialog: null,
   status: "",
 };
 
@@ -20,8 +21,8 @@ export const dialogsSlice = createSlice({
   name: "dialogs",
   initialState,
   reducers: {
-    setCurrentDialogId(state, action: PayloadAction<string>) {
-      state.currentDialogId = action.payload;
+    setCurrentDialog(state, action: PayloadAction<IDialog>) {
+      state.currentDialog = action.payload;
     },
   },
 
@@ -40,7 +41,7 @@ export const dialogsSlice = createSlice({
   },
 });
 
-export const { setCurrentDialogId } = dialogsSlice.actions; // actions
+export const { setCurrentDialog } = dialogsSlice.actions; // actions
 
 export const dialogsSelector = (state: RootState) => state.dialogs; // state
 

@@ -7,13 +7,15 @@ export default async function updateLastSeen(
   next: express.NextFunction
 ) {
   try {
+    if (req.user) {
+      await UserModel.updateOne(
+        {
+          _id: req.user._id,
+        },
+        { last_seen: new Date() }
+      );
+    }
 
-    await UserModel.updateOne(
-      {
-        _id: req.user._id,
-      },
-      { last_seen: new Date() }
-    );
   } catch (err) {
     console.log(err);
   }

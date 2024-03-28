@@ -1,11 +1,7 @@
-import { IDialog } from "../../../components/Dialog/types";
+import { IDialog } from "../../../types/dialog";
 
 export interface IDialogsState {
   items: IDialog[];
-  currentDialogId: string | null | number;
+  currentDialog: IDialog | null;
   status: string;
-}
-
-export interface IDialogsSlice {
-  items: IDialog[]
 }

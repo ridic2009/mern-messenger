@@ -11,5 +11,6 @@ export interface IDialogProps {
   initiator: IUser;
   partner: IUser;
   unread: number;
+  isUnread: boolean
   onSelect: () => void;
 }

@@ -1,35 +1,37 @@
 import { ReactElement, useEffect } from "react";
+import socket from "../../core/socket";
 
-import Dialog from "../Dialog";
 
-import styles from "./index.module.scss";
 import {
   dialogsSelector,
   fetchDialogs,
-  setCurrentDialogId,
+  setCurrentDialog,
 } from "../../redux/slices/dialogs";
 import { useAppDispatch } from "../../redux/store";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { userSelector } from "../../redux/slices/user";
-import socket from "../../core/socket";
 
-export default function Dialogs(): ReactElement {
+import Dialog from "../Dialog";
+
+import { IDialogsProps } from "./types";
+
+import styles from "./index.module.scss";
+
+
+
+export default function Dialogs({user}: IDialogsProps): ReactElement {
   const dispatch = useAppDispatch();
-  const user = useTypedSelector(userSelector);
   const { items } = useTypedSelector(dialogsSelector);
 
   const sortedItems = [...items].sort(
     (a, b) =>
-      new Date(b.lastMessage.createdAt).getTime() -
-      new Date(a.lastMessage.createdAt).getTime()
+      new Date(b.lastMessage?.createdAt).getTime() -
+      new Date(a.lastMessage?.createdAt).getTime()
   );
 
   useEffect(() => {
     dispatch(fetchDialogs());
 
-    socket.on("server:dialog_create", data => {
-      console.log(data);
-      
+    socket.on("server:dialog_create", () => {
       dispatch(fetchDialogs());
     });
   }, []);
@@ -39,9 +41,10 @@ export default function Dialogs(): ReactElement {
       {items.length > 0 ? (
         sortedItems.map((item) => (
           <Dialog
+            isUnread={true}
             currentUser={user}
             key={item._id}
-            onSelect={() => dispatch(setCurrentDialogId(item._id))}
+            onSelect={() => dispatch(setCurrentDialog(item))}
             {...item}
           />
         ))

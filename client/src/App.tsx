@@ -6,7 +6,11 @@ import { useTypedSelector } from "./hooks/useTypedSelector";
 
 import "./scss/app.scss";
 
-axios.defaults.headers.common["token"] = window.localStorage.getItem("token");
+axios.interceptors.request.use((config) => {
+  config.headers["token"] = window.localStorage.getItem("token");
+  return config;
+});
+
 
 export default function App() {
   const { isAuth } = useTypedSelector((state) => state.user);

@@ -1,0 +1,38 @@
+@import '../../scss/vars.scss';
+
+.profile {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    padding: 8px 16px;
+    background-color: $layout-white;
+    color: $text-black;
+    border-top: $inbox-border;
+
+    &Opts {
+      cursor: pointer;
+    }
+
+    &Badge {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: start;
+      flex-grow: 1;
+      margin-left: 8px;
+
+      h2 {
+        font-size: 16px;
+        max-width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        color: $text-black;
+      }
+
+      span {
+        margin-top: 4px;
+        font-size: 14px;
+        color: $text-grey;
+      }
+    }
+  }

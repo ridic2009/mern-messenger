@@ -1,5 +1,6 @@
 import styles from "./index.module.scss";
 import doubleTickIcon from "../../assets/img/doubletickblue.svg";
+import singleTickIcon from "../../assets/img/tick.svg";
 import formatDate from "../../helpers/formatDate";
 import { ReactElement } from "react";
 import Avatar from "../Avatar";
@@ -9,16 +10,13 @@ export default function Dialog({
   currentUser,
   lastMessage,
   unread,
+  isUnread,
   initiator,
   partner,
   onSelect,
 }: IDialogProps): ReactElement {
-
-  // const user = если id залогиненого юзера === id инициатора диалога, значит нужно отобразить данные партнера и наоборот, 
-  // если id залогиненного юзера === id партнера инициатора диалога, значит залогиненый юзер это партнер и нужно отображать
-  // данные инициатора диалога
-
-  const user = currentUser._id === initiator._id ? partner : initiator
+  
+  const user = currentUser._id === initiator._id ? partner : initiator;
 
   return (
     <li onClick={onSelect} className={styles.dialog}>
@@ -26,22 +24,35 @@ export default function Dialog({
       <div className={styles.user}>
         <div className={styles.userHeader}>
           <h3 title={user.login}>{user.login}</h3>
-          <time>{formatDate(lastMessage.createdAt || '')}</time>
+          <time>
+            {lastMessage ? formatDate(lastMessage.createdAt || "") : ""}
+          </time>
         </div>
         <div className={styles.userContent}>
-          <p title={lastMessage.text} className={styles.lastMessage}>
-            {lastMessage.text}
-          </p>
+          {lastMessage && (
+            <p title={lastMessage.text} className={styles.lastMessage}>
+              {lastMessage.text}
+            </p>
+          )}
           {unread > 0 ? (
             <div className={styles.newMessage}>
               <span>{unread > 9 ? "+" + 9 : unread}</span>
             </div>
           ) : (
-            <img
-              className={styles.messageRead}
-              src={doubleTickIcon}
-              alt="read"
-            />
+            lastMessage &&
+            (isUnread ? (
+              <img
+                className={styles.messageRead}
+                src={singleTickIcon}
+                alt="read"
+              />
+            ) : (
+              <img
+                className={styles.messageRead}
+                src={doubleTickIcon}
+                alt="read"
+              />
+            ))
           )}
         </div>
       </div>
