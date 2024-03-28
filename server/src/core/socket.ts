@@ -14,10 +14,10 @@ export default (http: http.Server) => {
   const io = new Server(http, options);
 
   io.on("connection", function (socket) {
-    console.log("Пользователь подключился");
+    console.log("Пользователь подключился " + socket.id);
 
     socket.on("disconnect", () => {
-      console.log("Пользователь отключился");
+      console.log("Пользователь отключился " + socket.id);
     });
   });
 

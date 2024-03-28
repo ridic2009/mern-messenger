@@ -14,12 +14,9 @@ export default function ChatInput({ userId, dialogId }: IChatInputProps) {
     dialogId: string | undefined,
     event?: React.KeyboardEvent
   ) => {
-
-    if (dialogId === null) {
-      return
-    }
-
-    if (event?.key === "Enter" && text.trim() !== "") {
+    if (!dialogId) {
+      return;
+    } else if (event?.key === "Enter" && text.trim() !== "") {
       await messages.send(text, userId, dialogId);
       setValue("");
     }
@@ -58,7 +55,7 @@ export default function ChatInput({ userId, dialogId }: IChatInputProps) {
           />
         </svg>
         <svg
-        id="send"
+          id="send"
           className={styles.chatInputOpt}
           onClick={() => sendMessage(value, userId, dialogId)}
           width="800px"

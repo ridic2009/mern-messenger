@@ -17,11 +17,16 @@ import UserProfile from "../../components/UserProfile";
 export default function Inbox(): ReactElement {
   const dispatch = useAppDispatch();
 
-  const { currentDialog} = useTypedSelector(dialogsSelector);
+  const { currentDialog } = useTypedSelector(dialogsSelector);
   const user: IUser = useTypedSelector(userSelector);
 
   const messageRef = useRef<HTMLDivElement>(null);
+  const partnerNickname =
+    user._id === currentDialog?.initiator._id
+      ? currentDialog.partner.login
+      : currentDialog?.initiator.login;
 
+  const partnerStatus = null;
   useEffect(() => {
     dispatch(fetchUser());
   }, []);
@@ -46,24 +51,35 @@ export default function Inbox(): ReactElement {
         </aside>
 
         <section className={styles.chat}>
-          <div className={styles.chatHeader}>
-            <div />
-            <div className={styles.partner}>
-              <h2 className={styles.partnerTitle}>
-                {user._id === currentDialog?.initiator._id
-                  ? currentDialog.partner.login
-                  : currentDialog?.initiator.login}
-              </h2>
-              <span className={styles.partnerStatus}>онлайн</span>
-            </div>
-            <div />
-          </div>
-          <div ref={messageRef} className={styles.chatBodyWrap}>
-            <div className={styles.chatBody}>
-              <Messages blockRef={messageRef} dialogId={currentDialog?._id} />
-            </div>
-          </div>
-          <ChatInput userId={user._id} dialogId={currentDialog?._id} />
+          {currentDialog && (
+            <>
+              <div className={styles.chatHeader}>
+                <div />
+                <div className={styles.partner}>
+                  {partnerNickname ? (
+                    <h2 className={styles.partnerTitle}>{partnerNickname}</h2>
+                  ) : (
+                    "Выберите диалог"
+                  )}
+                  {partnerStatus && (
+                    <span className={styles.partnerStatus}>
+                      {partnerStatus}
+                    </span>
+                  )}
+                </div>
+                <div />
+              </div>
+              <div ref={messageRef} className={styles.chatBodyWrap}>
+                <div className={styles.chatBody}>
+                  <Messages
+                    blockRef={messageRef}
+                    dialogId={currentDialog._id}
+                  />
+                </div>
+              </div>
+              <ChatInput userId={user._id} dialogId={currentDialog._id} />
+            </>
+          )}
         </section>
       </main>
     </div>

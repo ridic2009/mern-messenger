@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { addMessage, fetchMessages, messagesSelector } from "../../redux/slices/messages";
+import {
+  addMessage,
+  fetchMessages,
+  messagesSelector,
+} from "../../redux/slices/messages";
 import { useAppDispatch } from "../../redux/store";
 import Message from "../Message";
 
@@ -8,21 +12,20 @@ import styles from "./index.module.scss";
 import { IMessage } from "../../types/message";
 import formatDate from "../../helpers/formatDate";
 import socket from "../../core/socket";
+import { IMessagesProps } from "./types";
 
-export default function Messages({ dialogId, blockRef }: any) {
+export default function Messages({ dialogId, blockRef }: IMessagesProps) {
   const dispatch = useAppDispatch();
   const { items } = useTypedSelector(messagesSelector);
 
   useEffect(() => {
     socket.on("server:message_create", (data) => {
-      console.log(data);
-
-      dispatch(addMessage(data))
+      data.dialog._id === dialogId && dispatch(addMessage(data));
     });
   }, []);
 
   useEffect(() => {
-    dialogId === null ? void 0 : dispatch(fetchMessages(dialogId));
+    dialogId && dispatch(fetchMessages(dialogId));
   }, [dialogId]);
 
   useEffect(() => {

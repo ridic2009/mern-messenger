@@ -1,19 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
+
 import user from "../../../api/user";
-import { IUser } from "../../../types/user";
+
+import { IUserState } from "./types";
 
 export const fetchUser = createAsyncThunk("user/get", async () => {
   const { data } = await user.getMe();
   return data;
 });
-
-interface IUserState {
-  data: IUser;
-  status: string | null;
-  token: string | null;
-  isAuth: boolean;
-}
 
 const initialState: IUserState = {
   data: {
@@ -21,8 +16,10 @@ const initialState: IUserState = {
     email: '',
     login: '',
     password: '',
+    confirmed_hash: '',
     confirmed: false,
-    confirmed_hash: ''
+    isOnline: false
+
   },
   status: null,
   token: window.localStorage.getItem("token"),
@@ -37,7 +34,12 @@ export const userSlice = createSlice({
       state.isAuth = false;
       state.token = null;
       window.localStorage.removeItem("token");
+      window.location.reload()
     },
+
+    setIsOnline(state, action) {
+      state.data.isOnline = action.payload
+    }
   },
 
   extraReducers(builder) {
@@ -57,8 +59,10 @@ export const userSlice = createSlice({
           email: '',
           login: '',
           password: '',
+          confirmed_hash: '',
           confirmed: false,
-          confirmed_hash: ''
+          isOnline: false
+
         };
       });
   },
@@ -66,6 +70,6 @@ export const userSlice = createSlice({
 
 export const userSelector = (state: RootState) => state.user.data;
 
-export const { logout } = userSlice.actions;
+export const { logout, setIsOnline } = userSlice.actions;
 
 export default userSlice.reducer;
