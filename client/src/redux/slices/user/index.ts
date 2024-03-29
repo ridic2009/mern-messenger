@@ -6,7 +6,9 @@ import user from "../../../api/user";
 import { IUserState } from "./types";
 
 export const fetchUser = createAsyncThunk("user/get", async () => {
+
   const { data } = await user.getMe();
+  
   return data;
 });
 
@@ -34,12 +36,13 @@ export const userSlice = createSlice({
       state.token = null;
       window.localStorage.removeItem("token");
       window.location.reload();
-    }
+    },
   },
 
   extraReducers(builder) {
     builder.addCase(fetchUser.pending, (state) => {
       state.status = "pending";
+      state.token = window.localStorage.getItem("token");
     }),
       builder.addCase(fetchUser.fulfilled, (state, action) => {
         state.status = "success";
@@ -58,7 +61,7 @@ export const userSlice = createSlice({
           confirmed: false,
           isOnline: false,
         };
-        delete window.localStorage.token;
+        state.isAuth = false;
       });
   },
 });

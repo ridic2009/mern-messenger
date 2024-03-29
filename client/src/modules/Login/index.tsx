@@ -6,23 +6,25 @@ import AuthLayout from "../../components/AuthLayout";
 import Logo from "../../components/Logo";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import Notice from "../../components/Notice";
 
 import emailIcon from "../../assets/svg/emailIcon";
 import passwordIcon from "../../assets/svg/passwordIcon";
 import googleIcon from "../../assets/img/google.svg";
 import eyeIcon from "../../assets/img/eye.svg";
 
+import user from "../../api/user";
+
+import { useAppDispatch } from "../../redux/store";
+import { fetchUser} from "../../redux/slices/user";
 
 import styles from "./index.module.scss";
-import user from "../../api/user";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isNoticeVisible, setIsNoticeVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<any>({});
   const [_, setValue] = useState("");
+
+  const dispatch = useAppDispatch();
 
   const {
     register,
@@ -40,29 +42,23 @@ export default function Login() {
 
   const login = async (postData: any) => {
     try {
-      const { data } = await user.login(postData);
+      setIsLoading(true);
 
-      if (data.token) {
-        window.localStorage.setItem("token", data.token);
-        window.location.href = "/inbox";
-      }
+      const { data } = await user.login(postData);
+      window.localStorage.setItem("token", data.token);
+      dispatch(fetchUser());
+      window.location.href = "/inbox"
 
       return data;
     } catch (error: any) {
       alert(error.response.data.message);
-      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <>
-      {isNoticeVisible && (
-        <Notice
-          title={error.statusCode}
-          text={error.message}
-          isVisible={isNoticeVisible}
-        />
-      )}
       <AuthLayout>
         <div className={styles.login}>
           <header>
@@ -136,7 +132,7 @@ export default function Login() {
             <Button
               className={styles.loginBtn}
               type="submit"
-              disabled={isNoticeVisible || isLoading}
+              disabled={isLoading}
               title="Войти"
             />
           </form>
