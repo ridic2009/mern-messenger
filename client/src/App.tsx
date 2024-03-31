@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
@@ -15,8 +14,6 @@ axios.defaults.headers.common["token"] = window.localStorage.getItem("token");
 export default function App() {
 
   const token = window.localStorage.getItem('token')
-
-  useEffect(()=>{},[token])
 
   return (
     <BrowserRouter>

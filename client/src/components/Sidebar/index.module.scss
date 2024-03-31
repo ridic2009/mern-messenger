@@ -2,32 +2,42 @@
 
 .sidebar {
   background-color: $layout-white;
+  min-width: 380px;
+
+  .searchResultTitle {
+    display: block;
+    background-color: black;
+    color: #fff;
+    padding: 8px;
+  }
 
   &Header {
     height: $inbox-header-height;
     display: flex;
-    align-items: center;
-    padding: 0 14px;
+    flex-direction: column;
     border-bottom: $inbox-border;
+
+    .search {
+      width: 100%;
+      padding: 20px 20px 20px 64px;
+      font-size: 18px;
+      font-family: inherit;
+      outline: none;
+      background-color: #eee;
+      background-image: url("../../assets/img/search.svg");
+      background-repeat: no-repeat;
+      background-position: 16px;
+
+      color: $text-black;
+    }
   }
-}
 
-.search {
-  width: 100%;
-  padding: 20px 20px 20px 64px;
-  font-size: 18px;
-  font-family: inherit;
-  border-radius: 8px;
-  outline: none;
-  background-color: #eee;
-  background-image: url("../../assets/img/search.svg");
-  background-repeat: no-repeat;
-  background-position: 16px;
+  .sidebarBody {
+    height: calc(100vh - ($inbox-header-height + $inbox-profile-height));
+    overflow: auto;
+  }
 
-  color: $text-black;
-}
-
-.dialogsWrap {
-  height: calc(100vh - ($inbox-header-height + $inbox-profile-height));
-  overflow: auto;
+  .userSearching {
+    height: calc(100vh - ($inbox-header-height + $inbox-profile-height + 35px));
+  }
 }

@@ -10,6 +10,8 @@ import { createToken } from "../helpers/createToken";
 import toHash from "../helpers/toHash";
 import bcrypt from "bcrypt";
 import { Server } from "socket.io";
+import DialogController from "./DialogController";
+import DialogModel from "../models/DialogModel";
 
 class UserController {
   io: Server;
@@ -37,8 +39,13 @@ class UserController {
 
   async getAll(req: express.Request, res: express.Response) {
     try {
-      const users = await UserModel.find();
-      res.status(statusCodes.OK).json(users);
+      const { login } = req.query;
+
+      if (typeof login === "string") {
+        const users = await UserModel.find({ login: new RegExp(login, "i") });
+        res.status(statusCodes.OK).json(users);
+      }
+
     } catch (error) {
       sendResponse(res, statusCodes.InternalServerError, {
         message: statusCodesMessages[500],

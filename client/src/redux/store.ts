@@ -4,12 +4,14 @@ import { useDispatch } from 'react-redux'
 import dialogs from './slices/dialogs'
 import messages from './slices/messages'
 import user from './slices/user'
+import search from './slices/search'
 
 export const store = configureStore({
     reducer: {
         dialogs,
         messages,
-        user  
+        user,
+        search
     }
 })
 

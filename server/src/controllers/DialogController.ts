@@ -76,7 +76,6 @@ class DialogController {
     const postData = {
       initiator: req.body.initiator,
       partner: req.body.partner,
-      firstMessage: req.body.text,
     };
 
     try {
@@ -95,23 +94,9 @@ class DialogController {
           initiator: postData.initiator,
           partner: postData.partner,
         });
-        const newDialog = await dialog.save();
 
-        console.log("Новый диалог ёпты" + " " + newDialog);
-
-        const message = new MessageModel({
-          text: postData.firstMessage,
-          sender: postData.initiator,
-          dialog: newDialog._id,
-        });
-
-        const newMessage = await message.save();
-
-        await DialogModel.findOneAndUpdate(
-          { _id: newDialog._id },
-          { lastMessage: newMessage._id },
-          { new: true }
-        );
+        let newDialog = await dialog.save();
+        newDialog = await dialog.populate(['initiator', 'partner'])
 
         this.io.emit("server:dialog_create", (data: any) => {
           console.log(data);

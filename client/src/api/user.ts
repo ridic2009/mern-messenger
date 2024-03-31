@@ -24,6 +24,7 @@ export interface IRequestError {
 
 export default {
   getMe: () => axios.get<IUser>("http://localhost:3000/user/profile"),
+  getAll: (query: string) => axios.get<IUser[]>("http://localhost:3000/users?" + query),
   verify: (hash: string) => axios.post(`http://localhost:3000/user/verify?hash=${hash}`),
   login: (postData: ILoginPostData) => axios.post<ILoginResponse>("http://localhost:3000/user/login", postData),
   register: (postData: IRegisterPostData) => axios.post<IUser | IRequestError>("http://localhost:3000/user/register", postData),

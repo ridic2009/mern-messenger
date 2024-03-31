@@ -83,7 +83,7 @@ class MessageController {
 
       await DialogModel.findOneAndUpdate(
         { _id: postData.dialog },
-        { lastMessage: message._id },
+        { lastMessage: newMessage._id },
         { upsert: true }
       );
 

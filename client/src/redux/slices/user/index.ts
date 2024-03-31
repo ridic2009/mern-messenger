@@ -8,7 +8,7 @@ import { IUserState } from "./types";
 export const fetchUser = createAsyncThunk("user/get", async () => {
 
   const { data } = await user.getMe();
-  
+
   return data;
 });
 
@@ -33,21 +33,20 @@ export const userSlice = createSlice({
   reducers: {
     logout(state) {
       state.isAuth = false;
-      state.token = null;
+      state.token = null
       window.localStorage.removeItem("token");
       window.location.reload();
-    },
+    }
   },
 
   extraReducers(builder) {
     builder.addCase(fetchUser.pending, (state) => {
       state.status = "pending";
-      state.token = window.localStorage.getItem("token");
     }),
       builder.addCase(fetchUser.fulfilled, (state, action) => {
         state.status = "success";
         state.data = action.payload;
-        state.token = window.localStorage.getItem("token");
+        state.token = window.localStorage.getItem('token')
         state.isAuth = true;
       }),
       builder.addCase(fetchUser.rejected, (state) => {
@@ -68,6 +67,6 @@ export const userSlice = createSlice({
 
 export const userSelector = (state: RootState) => state.user.data;
 
-export const { logout } = userSlice.actions;
+export const { logout} = userSlice.actions;
 
 export default userSlice.reducer;

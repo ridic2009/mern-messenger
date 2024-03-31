@@ -46,8 +46,12 @@ export default function Login() {
 
       const { data } = await user.login(postData);
       window.localStorage.setItem("token", data.token);
-      dispatch(fetchUser());
-      window.location.href = "/inbox"
+      if (window.localStorage.getItem('token')) {
+        dispatch(fetchUser());
+        window.location.href = "/inbox"
+      }
+
+
 
       return data;
     } catch (error: any) {
