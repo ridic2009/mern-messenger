@@ -56,7 +56,7 @@ class UserController {
 
   async getMe(req: express.Request, res: express.Response) {
     try {
-      const foundUser = await UserModel.findById(req.user._id).exec();
+      const foundUser = await UserModel.findById(req.user._id).select('-password -confirm_hash').exec();
 
       if (!foundUser) {
         sendResponse(res, statusCodes.NotFound, {

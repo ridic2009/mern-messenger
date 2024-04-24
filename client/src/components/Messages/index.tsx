@@ -19,14 +19,22 @@ export default function Messages({ dialogId, blockRef }: IMessagesProps) {
   const { items } = useTypedSelector(messagesSelector);
 
   useEffect(() => {
-    socket.on("server:message_create", (data) => {
-      data.dialog._id === dialogId && dispatch(addMessage(data));
-    });
-  }, []);
+    
+    dispatch(fetchMessages(dialogId));
+
+  }, [dialogId]);
 
   useEffect(() => {
-    dialogId && dispatch(fetchMessages(dialogId));
-  }, [dialogId]);
+    socket.on("server:message_create", (data) => {
+
+      dispatch(addMessage(data))
+
+      // забыл для чего логика ниже так что пока выкл
+      // data.dialog._id === dialogId ? dispatch(addMessage(data)) : console.log('чё за хуйня!!!');
+
+
+    });
+  }, []);
 
   useEffect(() => {
     blockRef.current?.scrollTo(0, blockRef.current?.scrollHeight);

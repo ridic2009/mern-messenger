@@ -1,11 +1,15 @@
 import express from "express";
 
 import MessageModel from "../models/MessageModel";
+import DialogModel from "../models/DialogModel";
+
 import sendResponse from "../helpers/sendResponse";
+
 import statusCodes from "../configs/statusCodes.json";
 import statusCodesMessages from "../configs/statusCodesMessages.json";
+
 import { Server } from "socket.io";
-import DialogModel from "../models/DialogModel";
+
 
 class MessageController {
   io: Server;
@@ -24,13 +28,7 @@ class MessageController {
         .populate({
           path: "dialog",
           populate: {
-            path: "initiator",
-          },
-        })
-        .populate({
-          path: "dialog",
-          populate: {
-            path: "partner",
+            path: "initiator partner",
           },
         })
         .exec();
@@ -76,6 +74,12 @@ class MessageController {
     try {
       let newMessage = await message.save()
       newMessage = await newMessage.populate(['dialog', 'sender']);
+      newMessage = await newMessage.populate({
+        path: "dialog",
+        populate: {
+          path: "initiator partner",
+        },
+      })
 
       console.log(
         `Отправлено сообщение: ${message.text}. Диалог: ${message.dialog}`

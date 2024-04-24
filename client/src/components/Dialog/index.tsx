@@ -21,13 +21,13 @@ export default function Dialog({
   isUnread,
   initiator,
   partner,
-  onSelect,
+  onClick,
 }: IDialogProps): ReactElement {
 
   const user = currentUser._id === initiator._id ? partner : initiator;
 
   return (
-    <li onClick={onSelect} className={styles.dialog}>
+    <li onClick={onClick} className={styles.dialog}>
       <Avatar avatar={user.avatar} user={user} />
       <div className={styles.user}>
         <div className={styles.userHeader}>

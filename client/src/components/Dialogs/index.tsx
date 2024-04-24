@@ -46,7 +46,7 @@ export default function Dialogs({ user }: IDialogsProps): ReactElement {
             isUnread={true}
             currentUser={user}
             key={item._id}
-            onSelect={() => dispatch(setCurrentDialog(item))}
+            onClick={() => dispatch(setCurrentDialog(item))}
             {...item}
           />
         ))
